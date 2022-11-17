@@ -12,6 +12,9 @@ class UserModelTestCase(TestCase):
             email = "johndoe@example.org",
             password = "Password123"
         )
+
+    def test_valid_user(self):
+        self._asser_user_is_valid()
     
     def _asser_user_is_valid(self):
         try:
