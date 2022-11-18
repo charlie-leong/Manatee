@@ -10,8 +10,7 @@ class UserModelTestCase(TestCase):
             first_name = "John",
             last_name = "Doe",
             email = "johndoe@example.org",
-            password = "Password123",
-            bio = "This is a bio for John Doe. He is pretty cool."
+            password = "Password123"
         )
     
     def _asser_user_is_valid(self):
@@ -41,8 +40,7 @@ class UserModelTestCase(TestCase):
             first_name = "Jane",
             last_name = "Doe",
             email = "janedoe@example.org",
-            password = "Password123",
-            bio ="The quick brown fox jumps over the lazy dog."
+            password = "Password123"
         )
         self.user.username = self.second_user.username
         self._assert_user_is_invalid()
