@@ -3,6 +3,7 @@ from django.test import TestCase
 from lessons.forms import SignUpForm
 from lessons.models import User
 from django import forms
+from django.contrib.auth.hashers import check_password
 
 class SignUpFormTestCase(TestCase):
 
@@ -64,3 +65,16 @@ class SignUpFormTestCase(TestCase):
         self.form_input["new_password"] = "Wrongpassword123"
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())
+
+    # test that form saves correctly
+    def test_form_saves_correctly(self):
+        form = SignUpForm(data = self.form_input)
+        before = User.objects.count()
+        form.save()
+        after = User.objects.count()
+        self.assertEqual(after, before + 1)
+        user = User.objects.get(username = "@janedoe")
+        self.assertEqual(user.first_name, "Jane")
+        self.assertEqual(user.last_name, "Doe")
+        self.assertEqual(user.email, "janedoe@example.org")
+        self.assertTrue(check_password("Password123", user.password))
