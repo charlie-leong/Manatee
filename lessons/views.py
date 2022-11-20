@@ -1,6 +1,8 @@
+from email import message
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LogInForm
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 def home(request):
     return render(request, 'home.html')
@@ -19,7 +21,9 @@ def log_in(request):
             if user is not None:
                 login(request, user)
                 return redirect('dashboard')
-
+        # If invalid login details
+        messages.add_message(request, messages.ERROR, "Invalid username or password")
+        
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
