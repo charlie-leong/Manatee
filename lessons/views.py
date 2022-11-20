@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login
 def home(request):
     return render(request, 'home.html')
 
+def dashboard(request):
+    return render(request, "dashboard.html")
+
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
