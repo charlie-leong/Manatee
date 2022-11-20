@@ -3,8 +3,9 @@ from lessons.forms import SignUpForm
 from django.urls import reverse
 from lessons.models import User
 from django.contrib.auth.hashers import check_password
+from .helpers import LogInTester
 
-class SignUpViewTestCase(TestCase):
+class SignUpViewTestCase(TestCase, LogInTester):
 
     def setUp(self):
         self.url = reverse("sign_up")
@@ -57,3 +58,4 @@ class SignUpViewTestCase(TestCase):
         self.assertEqual(user.last_name, "Doe")
         self.assertEqual(user.email, "janedoe@example.org")
         self.assertTrue(check_password("Password123", user.password))
+        self.assertTrue(self._is_logged_in())
