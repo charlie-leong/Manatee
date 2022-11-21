@@ -1,6 +1,16 @@
 from django.core.validators import RegexValidator
 from django import forms
 from .models import User
+from .models import Request
+
+class RequestForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields=['availability', 'numLessons', 'interval', 'duration', 'extra']
+        widgets = {'numLessons':forms.NumberInput(),'interval':forms.NumberInput(),'duration':forms.NumberInput()}
+
+    def clean(self):
+        pass
 
 class LogInForm(forms.Form): #not associated wiht a particualr user model
     username = forms.CharField(label="Username")

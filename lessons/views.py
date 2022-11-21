@@ -1,6 +1,6 @@
 from email import message
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LogInForm
+from .forms import SignUpForm, LogInForm, RequestForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -39,3 +39,7 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+def request_lessons(request):
+    form = RequestForm()
+    return render(request, 'request-lessons.html', {'form': form})

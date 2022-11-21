@@ -23,4 +23,5 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name = "dashboard"),
     path('sign_up/', views.sign_up, name = 'sign_up'),
     path('', views.home, name='home'),
+    path('request-lessons/', views.request_lessons, name='request-lessons')
 ]

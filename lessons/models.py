@@ -13,5 +13,10 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
-
-# Create your models here.
+   
+class Request(models.Model):
+    availability =models.CharField(max_length=10)
+    numLessons=models.CharField(max_length=10)
+    interval = models.CharField(max_length=10)
+    duration=models.CharField(max_length=10)
+    extra =models.CharField(max_length=10)
