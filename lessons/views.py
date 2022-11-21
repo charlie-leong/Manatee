@@ -42,4 +42,4 @@ def sign_up(request):
 
 def request_lessons(request):
     form = RequestForm()
-    return render(request, 'request-lessons.html', {'form': form})
+    return render(request, 'request_lessons.html', {'form': form})

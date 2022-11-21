@@ -1,5 +1,3 @@
-from distutils.log import Log
-from re import I
 from django.test import TestCase
 from lessons.forms import LogInForm
 from django import forms
