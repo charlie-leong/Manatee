@@ -1,7 +1,23 @@
-from django.db import models
 from django.core.validators import RegexValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+# Create your models here.
+AVAILABILITY = (
+    ('monday','MONDAY'),
+    ('tuesday', 'TUESDAY'),
+    ('wednesday','WEDNESDAY'),
+    ('thursday','THURSDAY'),
+    ('friday','FRIDAY'),
+)
+
+class Request(models.Model):
+    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
+    number_of_lessons=models.PositiveIntegerField(default=1)
+    interval = models.PositiveIntegerField()
+    duration=models.PositiveIntegerField()
+    extra =models.CharField(max_length=10, blank=True)
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
@@ -14,9 +30,3 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
    
-class Request(models.Model):
-    availability =models.CharField(max_length=10)
-    numLessons=models.CharField(max_length=10)
-    interval = models.CharField(max_length=10)
-    duration=models.CharField(max_length=10)
-    extra =models.CharField(max_length=10)

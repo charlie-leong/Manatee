@@ -6,8 +6,8 @@ from .models import Request
 class RequestForm(forms.ModelForm):
     class Meta:
         model = Request
-        fields=['availability', 'numLessons', 'interval', 'duration', 'extra']
-        widgets = {'numLessons':forms.NumberInput(),'interval':forms.NumberInput(),'duration':forms.NumberInput()}
+        fields=['availability', 'number_of_lessons', 'interval', 'duration', 'extra']
+        #widgets = {'number_of_lessons':forms.NumberInput(),'interval':forms.NumberInput(),'duration':forms.NumberInput()}
 
     def clean(self):
         pass
@@ -49,3 +49,4 @@ class SignUpForm(forms.ModelForm):
             password = self.cleaned_data.get('new_password'),
         )
         return user
+

@@ -1,3 +1,9 @@
+from django.shortcuts import render
+from .forms import RequestForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from .models import Request
+
 from email import message
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LogInForm, RequestForm
@@ -41,5 +47,16 @@ def sign_up(request):
     return render(request, 'sign_up.html', {'form': form})
 
 def request_lessons(request):
-    form = RequestForm()
-    return render(request, 'request_lessons.html', {'form': form})
+    if request.method == 'POST':
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('request-display'))
+
+    form = RequestForm(request.POST or None)
+    return render(request, 'request-lessons.html', {'form': form})
+
+
+def request_display(request):
+    allRequests = Request.objects.all()
+    return render (request, 'request-display.html', {'allRequests':allRequests})
