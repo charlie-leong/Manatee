@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 AVAILABILITY = (
@@ -17,3 +18,15 @@ class Request(models.Model):
     interval = models.PositiveIntegerField()
     duration=models.PositiveIntegerField()
     extra =models.CharField(max_length=10, blank=True)
+class User(AbstractUser):
+    username = models.CharField(
+        max_length=30,
+        unique=True,
+        validators = [RegexValidator(
+            regex= r'^@\w{3,}$',
+            message = "username must consist of @ and min 3 alphanumericals"
+        )])
+    first_name = models.CharField(max_length=50, blank=False)
+    last_name = models.CharField(max_length=50, blank=False)
+    email = models.EmailField(unique=True, blank=False)
+   
