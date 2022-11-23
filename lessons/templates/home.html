@@ -1,10 +1,16 @@
-
 {%extends 'base.html'%}
+{%load static%}
 
-{% block title %}<title>Home</title>{% endblock %}
+
+{% block title %}Home{% endblock %}
+
+
+{%block jumbotron%}
+Music School Management System
+{%endblock%}
+
 
 {% block content %}
-<h1>Music School Management System</h1>
 <p> this is a welcome message </p>
 <p><a href="{% url 'sign_up' %}">sign up here !</a></p>
 <p><a href="{% url 'log_in' %}">log in here !</a></p>
