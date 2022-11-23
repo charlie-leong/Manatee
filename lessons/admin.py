@@ -10,6 +10,6 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
-    list_display = {
+    list_display = [
         "availability", "number_of_lessons", "interval", "duration", "extra"
-    }
+    ]
