@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
 from lessons.models import User
+from django.db.utils import IntegrityError
 
 class Command(BaseCommand):
 
@@ -15,20 +16,23 @@ class Command(BaseCommand):
         for i in range(100):
             first_name = self.faker.first_name()
             last_name = self.faker.last_name()
-            username = f'@{first_name}{last_name}'
-            email = f'{first_name}.{last_name}@example.org'
+            username = f'@{first_name.lower()}{last_name.lower()}'
+            email = f'{first_name.lower()}.{last_name.lower()}@example.org'
             password = "Password123"
-            User.objects.create_user(
-                username = username,
-                first_name = first_name,
-                last_name = last_name,
-                email = email,
-                password = password
-            )
+            try:
+                User.objects.create_user(
+                    username = username,
+                    first_name = first_name,
+                    last_name = last_name,
+                    email = email,
+                    password = password
+                )
+            except IntegrityError:
+                continue
 
     
     def createThreeUsers(self):
-        if not User.objects.get(username = "@johndoe"):
+        if not User.objects.filter(username = "@johndoe").exists():
             User.objects.create_user(
                 "@johndoe",
                 first_name = "John",
@@ -37,7 +41,7 @@ class Command(BaseCommand):
                 password = "Password123"
             )
         
-        if not User.objects.get(username = "@petrapickles"):
+        if not User.objects.filter(username = "@petrapickles").exists():
             User.objects.create_user(
                 "@petrapickles",
                 first_name = "Petra",
@@ -47,7 +51,7 @@ class Command(BaseCommand):
                 is_staff = True
             )
 
-        if not User.objects.get(username = "@martymajor"):
+        if not User.objects.filter(username = "@martymajor").exists():
             User.objects.create_superuser(
                 "@martymajor",
                 first_name = "Marty",
