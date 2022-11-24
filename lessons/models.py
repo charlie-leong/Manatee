@@ -1,5 +1,4 @@
-from django.core.validators import RegexValidator
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -12,12 +11,19 @@ AVAILABILITY = (
     ('friday','FRIDAY'),
 )
 
+DURATIONS = ((30, 30), (45, 45), (60, 60))
+NUM_LESSONS = ((1, 1), (2, 2), (3, 3), (4, 4))      # assuming that a request will request 4 lessons at most
+
 class Request(models.Model):
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
-    number_of_lessons=models.PositiveIntegerField(default=1)
+    # number_of_lessons=models.PositiveIntegerField(default=1)
+    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
     interval = models.PositiveIntegerField()
-    duration=models.PositiveIntegerField()
-    extra =models.CharField(max_length=10, blank=True)
+    duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
+    extra =models.TextField(max_length=30, verbose_name="Extra information", blank=True)
+    created_by = models.ForeignKey("User", on_delete=models.CASCADE)
+    is_approved = models.BooleanField(default= False)
+
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
