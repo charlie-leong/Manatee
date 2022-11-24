@@ -4,12 +4,6 @@
 
 {% block title %}Home{% endblock %}
 
-<!--navbar here-->
-
-{%block jumbotron%}
-Music School Management System
-{%endblock%}
-
 <!--if not logged in-->
 
 {%block navbar%}
@@ -19,10 +13,26 @@ Music School Management System
 
 
 
+{%block jumbotron%}
+Music School Management System
+{%endblock%}
+
+
+
+
+
 {% block content %}
-<p> this is a welcome message </p>
-<p><a href="{% url 'request-lessons' %}">Request a lesson</a></p>
-<p><a href="{% url 'request-display' %}">See Requests</a></p>
+<h2 class="jumbotron"> Welcome! </h2>
+
+<div class="container px-4 text-center">
+    <div class="col gx-5">
+        <a href="{% url 'request-lessons' %}" class="btn btn-outline-secondary">Request a lesson</a>
+        <a href="{% url 'request-display' %}" class="btn btn-outline-secondary">See Requests</a>
+    </div>
+  </div>
+
+ 
 {% endblock %}
+
 
 
