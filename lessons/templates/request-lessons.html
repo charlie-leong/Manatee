@@ -1,16 +1,23 @@
 
-{%extends 'base.html'%}
 
-{% block title %}<title>Request Lessons</title>{% endblock %}
+{%extends 'base.html'%}
+{%load static%}
+
+{% block title %}Request Lessons{% endblock %}
+
+
+{%block jumbotron%}
+Request Lessons
+{%endblock%}
+
 
 {% block content %}
-<h1>Request Lessons</h1>
-<a href="{% url 'home' %}">Back to home</a>
     <form action="{% url 'request-lessons' %}" method="post">
         {% csrf_token %} 
         {{ form.as_p }}
         <input type="submit" value="Request lesson">
         <input type="reset" value="Clear">
+
 {% endblock %}
 
 

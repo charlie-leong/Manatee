@@ -4,16 +4,25 @@
 
 {% block title %}Home{% endblock %}
 
+<!--navbar here-->
 
 {%block jumbotron%}
 Music School Management System
 {%endblock%}
 
+<!--if not logged in-->
+
+{%block navbar%}
+<a href="{% url 'log_in' %}">Log In</a>
+<a href="{% url 'sign_up' %}">Sign Up</a>
+{%endblock%}
+
+
 
 {% block content %}
 <p> this is a welcome message </p>
-<p><a href="{% url 'sign_up' %}">sign up here !</a></p>
-<p><a href="{% url 'log_in' %}">log in here !</a></p>
 <p><a href="{% url 'request-lessons' %}">Request a lesson</a></p>
 <p><a href="{% url 'request-display' %}">See Requests</a></p>
 {% endblock %}
+
+
