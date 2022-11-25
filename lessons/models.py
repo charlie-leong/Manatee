@@ -18,9 +18,9 @@ class Request(models.Model):
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
     # number_of_lessons=models.PositiveIntegerField(default=1)
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField()
+    interval = models.PositiveIntegerField(validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
-    extra =models.TextField(max_length=30, verbose_name="Extra information", blank=True)
+    extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
     created_by = models.ForeignKey("User", on_delete=models.CASCADE)
     is_approved = models.BooleanField(default= False)
 

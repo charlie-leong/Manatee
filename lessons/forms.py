@@ -6,8 +6,8 @@ from .models import Request
 class RequestForm(forms.ModelForm):
     class Meta:
         model = Request
-        fields=['availability', 'number_of_lessons', 'interval', 'duration', 'extra']
-        #widgets = {'number_of_lessons':forms.NumberInput(),'interval':forms.NumberInput(),'duration':forms.NumberInput()}
+        fields=['availability', 'number_of_lessons', 'interval', 'duration', 'extra_info']
+        widgets = {'extra_info': forms.Textarea()}
 
     def clean(self):
         pass
