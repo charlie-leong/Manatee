@@ -12,7 +12,7 @@ class RequestForm(forms.ModelForm):
     def clean(self):
         pass
 
-    def save(self, inputId):
+    def save(self, inputId = 1):
         super().save(commit=False)
         request = Request.objects.create(
             availability = self.cleaned_data.get("availability"),
