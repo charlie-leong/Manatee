@@ -18,6 +18,7 @@ class Request(models.Model):
     interval = models.PositiveIntegerField()
     duration=models.PositiveIntegerField()
     extra =models.CharField(max_length=10, blank=True)
+
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
