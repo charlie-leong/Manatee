@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Request
+from .models import *
 # Register your models here.
 
 @admin.register(User)
@@ -12,4 +12,11 @@ class UserAdmin(admin.ModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     list_display = [
         "availability", "number_of_lessons", "interval", "duration", "extra"
+    ]
+
+
+@admin.register(BankTransfer)
+class BankTransferAdmin(admin.ModelAdmin):
+    list_display = [
+        "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
     ]

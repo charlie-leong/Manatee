@@ -31,3 +31,12 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
    
+class BankTransfer(models.Model):
+    user_ID=models.CharField(max_length=4)
+    invoice_number=models.CharField(max_length=3)
+    full_invoice_number = models.CharField(max_length=8)
+    pay = models.PositiveIntegerField()
+    paid = models.BooleanField()
+
+
+

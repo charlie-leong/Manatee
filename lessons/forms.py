@@ -1,7 +1,6 @@
 from django.core.validators import RegexValidator
 from django import forms
-from .models import User
-from .models import Request
+from .models import *
 
 class RequestForm(forms.ModelForm):
     class Meta:
@@ -49,4 +48,12 @@ class SignUpForm(forms.ModelForm):
             password = self.cleaned_data.get('new_password'),
         )
         return user
+
+
+class BankTransferForm(forms.ModelForm):
+    class Meta:
+        model = BankTransfer
+        fields=['invoice_number', 'pay', 'paid']
+    def clean(self):
+        pass
 
