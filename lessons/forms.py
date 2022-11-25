@@ -12,6 +12,20 @@ class RequestForm(forms.ModelForm):
     def clean(self):
         pass
 
+    def save(self, inputId):
+        super().save(commit=False)
+        request = Request.objects.create(
+            availability = self.cleaned_data.get("availability"),
+            number_of_lessons = self.cleaned_data.get("number_of_lessons"),
+            interval = self.cleaned_data.get("interval"),
+            duration = self.cleaned_data.get("duration"),
+            extra_info = self.cleaned_data.get("extra_info"),
+            # created_by = User.objects.get(id = request.session["_auth_user_id"])
+            created_by = User.objects.get(id = inputId)
+        )
+        return request
+
+
 class LogInForm(forms.Form): #not associated wiht a particualr user model
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
