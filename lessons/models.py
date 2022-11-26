@@ -23,10 +23,11 @@ class Request(models.Model):
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
     number_of_lessons=models.PositiveIntegerField(default=1)
     interval = models.PositiveIntegerField()
-    duration=models.PositiveIntegerField(choices=DURATION_OPTIONS, default=30)
+    duration=models.PositiveIntegerField(choices=DURATION_OPTIONS, default=60)
     extra =models.CharField(max_length=10, blank=True)
 
 class User(AbstractUser):
+    id = models.BigAutoField(primary_key=True)
     username = models.CharField(
         max_length=30,
         unique=True,
@@ -37,6 +38,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
+    balance = 0
    
 class Lesson(models.Model):
     assigned_student_id = models.CharField(max_length = 10)
