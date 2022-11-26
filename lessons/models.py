@@ -18,6 +18,7 @@ class Request(models.Model):
     interval = models.PositiveIntegerField()
     duration=models.PositiveIntegerField()
     extra =models.CharField(max_length=10, blank=True)
+
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
@@ -30,3 +31,30 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
    
+class Lesson(models.Model):
+    assigned_student_id = models.CharField()
+    assigned_teacher_id = models.CharField()
+    number_of_lessons = models.PositiveIntegerField()
+    week_interval = models.PositiveIntegerField()
+    duration = models.PositiveIntegerField()
+    paid = False
+
+    def togglePaid():
+        if(paid == False):
+            paid = False
+            return paid
+        paid = True
+        return paid
+
+    def calculateCost():
+        baseCost = 20
+        #change to be adjusted based on duration of lesson
+        totalCost = baseCost * duration/ 60 * number_of_lessons
+        return totalCost
+
+    def setAvailability(mon, tue, wed, thu, fri):
+        monAvailability = mon
+        tueAvailability = tue
+        wedAvailability = wed
+        thuAvailability = thu
+        friAvailability = fri
