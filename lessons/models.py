@@ -25,6 +25,7 @@ class Request(models.Model):
 
 
 class User(AbstractUser):
+    id = models.BigAutoField(primary_key=True)
     username = models.CharField(
         max_length=30,
         unique=True,
@@ -35,4 +36,20 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
+    balance = 0
    
+class Lesson(models.Model):
+    assigned_student_id = models.CharField(max_length = 10)
+    assigned_teacher_id = models.CharField(max_length = 10)
+    number_of_lessons = models.PositiveIntegerField()
+    week_interval = models.PositiveIntegerField()
+    duration = models.PositiveIntegerField()
+    paid = False
+
+    def togglePaid():
+        if(paid == False):
+            paid = False
+            return paid
+        paid = True
+        return paid
+
