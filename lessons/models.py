@@ -54,4 +54,8 @@ class Lesson(models.Model):
             return paid
         paid = True
         return paid
+    
+    def calculateCost():
+        baseCost = 20
+        return baseCost * duration/60 * number_of_lessons
 
