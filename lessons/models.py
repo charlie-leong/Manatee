@@ -36,6 +36,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
+<<<<<<< HEAD
     balance = 0
    
 class Lesson(models.Model):
@@ -56,4 +57,15 @@ class Lesson(models.Model):
     def calculateCost():
         baseCost = 20
         return baseCost * duration/60 * number_of_lessons
+=======
+   
+class BankTransfer(models.Model):
+    user_ID=models.CharField(max_length=4)
+    invoice_number=models.CharField(max_length=3)
+    full_invoice_number = models.CharField(max_length=8)
+    pay = models.PositiveIntegerField()
+    paid = models.BooleanField()
+
+
+>>>>>>> invoice
 
