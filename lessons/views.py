@@ -52,7 +52,9 @@ def request_lessons(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('request-display'))
-
+        # invalid form input
+        messages.add_message(request, messages.ERROR, "Invalid form input")
+        
     form = RequestForm(request.POST or None)
     return render(request, 'request-lessons.html', {'form': form})
 
