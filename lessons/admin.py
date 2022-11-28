@@ -12,8 +12,11 @@ class UserAdmin(admin.ModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     list_display = [
 <<<<<<< HEAD
+<<<<<<< HEAD
         "availability", "number_of_lessons", "interval", "duration", "extra_info"
 =======
+=======
+>>>>>>> invoice
         "availability", "number_of_lessons", "interval", "duration", "extra"
     ]
 
@@ -22,5 +25,8 @@ class RequestAdmin(admin.ModelAdmin):
 class BankTransferAdmin(admin.ModelAdmin):
     list_display = [
         "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
+<<<<<<< HEAD
+>>>>>>> invoice
+=======
 >>>>>>> invoice
     ]
