@@ -1,14 +1,30 @@
-<html>
-<head>
-  <title>lessons</title>
-</head>
-<body>
-  <h1>sign up</h1>
-  <form action="{% url 'sign_up' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Sign up">
-  </form>
 
-</body>
-</html>
+{%extends 'base.html'%}
+{%load static%}
+
+
+{% block title %}SignUp{% endblock %}
+
+
+{%block navbar%}
+<a class='nav-link' href="{% url 'log_in' %}">Log In</a>
+{%endblock%}
+
+
+
+{%block jumbotron%}
+Sign Up{%endblock%}
+
+
+
+
+
+{% block content %}
+<form action="{% url 'sign_up' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Sign up">
+</form>
+
+
+{% endblock %}
