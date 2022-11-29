@@ -50,7 +50,7 @@ def request_lessons(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(request.user)
             return HttpResponseRedirect(reverse('request-display'))
         # invalid form input
         messages.add_message(request, messages.ERROR, "Invalid form input")
