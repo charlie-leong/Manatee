@@ -23,7 +23,6 @@ class Request(models.Model):
     created_by = models.ForeignKey("User", on_delete=models.CASCADE)
     is_approved = models.BooleanField(default= False)
 
-
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
