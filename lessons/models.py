@@ -25,6 +25,7 @@ class Request(models.Model):
 
 
 class User(AbstractUser):
+    id = models.BigAutoField(primary_key=True)
     username = models.CharField(
         max_length=30,
         unique=True,
@@ -36,3 +37,30 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
    
+class BankTransfer(models.Model):
+    user_ID=models.CharField(max_length=4)
+    invoice_number=models.CharField(max_length=3)
+    full_invoice_number = models.CharField(max_length=8)
+    pay = models.PositiveIntegerField()
+    paid = models.BooleanField()
+    balance = 0
+   
+class Lesson(models.Model):
+    assigned_student_id = models.CharField(max_length = 10)
+    assigned_teacher_id = models.CharField(max_length = 10)
+    number_of_lessons = models.PositiveIntegerField(default=1)
+    week_interval = models.PositiveIntegerField(default=1)
+    duration = models.PositiveIntegerField(default=60)
+    paid = False
+
+    def togglePaid():
+        if(paid == False):
+            paid = False
+            return paid
+        paid = True
+        return paid
+    
+    def calculateCost():
+        baseCost = 20
+        return baseCost * duration/60 * number_of_lessons
+
