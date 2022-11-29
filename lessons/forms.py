@@ -17,7 +17,7 @@ class RequestForm(forms.ModelForm):
     def clean(self):
         pass
 
-    def save(self, inputId = 1):
+    def save(self, user):
         super().save(commit=False)
         request = Request.objects.create(
             availability = self.cleaned_data.get("availability"),
@@ -25,8 +25,7 @@ class RequestForm(forms.ModelForm):
             interval = self.cleaned_data.get("interval"),
             duration = self.cleaned_data.get("duration"),
             extra_info = self.cleaned_data.get("extra_info"),
-            # created_by = User.objects.get(id = request.session["_auth_user_id"])
-            created_by = User.objects.get(id = inputId)
+            created_by = user
         )
         return request
 
