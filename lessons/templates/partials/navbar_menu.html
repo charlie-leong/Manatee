@@ -1,0 +1,19 @@
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url "request-lessons" %}">Request Lessons</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="user_settings_dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Account
+        </a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="user_settings_dropdown">
+          <a class="dropdown-item" href="#">Edit Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url "log_out" %}">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
