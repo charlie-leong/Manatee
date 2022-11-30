@@ -1,15 +1,23 @@
-<html>
-  <head>
-    <title>All Requests</title>
-  </head>
-  <body>
-    <h1>All Requests</h1>
-    <a href="{% url 'home' %}">Back to home</a>
+
+{%extends 'base.html'%}
+{%load static%}
+
+
+{% block title %}Requests{% endblock %}
+
+<!--navbar here-->
+
+{%block jumbotron%}
+All Requests
+{%endblock%}
+
+
+{% block content %}
     {% for request in allRequests %}
      <p>----------------</p>
       <h2>{{ request.extra }}</h2>
       <p>{{request.availability}}</p>
     {% endfor %}
+{% endblock %}
 
-  </body>
-</html>
+

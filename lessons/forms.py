@@ -1,16 +1,34 @@
 from django.core.validators import RegexValidator
 from django import forms
-from .models import User
-from .models import Request
+from .models import *
 
 class RequestForm(forms.ModelForm):
     class Meta:
         model = Request
-        fields=['availability', 'number_of_lessons', 'interval', 'duration', 'extra']
-        #widgets = {'number_of_lessons':forms.NumberInput(),'interval':forms.NumberInput(),'duration':forms.NumberInput()}
+        fields=['availability', 'number_of_lessons', 'duration', 'interval', 'extra_info']
+        widgets = {'extra_info': forms.Textarea()}
 
+    interval = forms.IntegerField(
+        min_value=2,
+        max_value=14,
+        error_messages={"min_value": "Cannot request lessons for a period shorter than 2 days.", "max_value": "Cannot request lessons for a period longer than 14 days."}
+        )
+        
     def clean(self):
         pass
+
+    def save(self, user):
+        super().save(commit=False)
+        request = Request.objects.create(
+            availability = self.cleaned_data.get("availability"),
+            number_of_lessons = self.cleaned_data.get("number_of_lessons"),
+            interval = self.cleaned_data.get("interval"),
+            duration = self.cleaned_data.get("duration"),
+            extra_info = self.cleaned_data.get("extra_info"),
+            created_by = user
+        )
+        return request
+
 
 class LogInForm(forms.Form): #not associated wiht a particualr user model
     username = forms.CharField(label="Username")
@@ -49,4 +67,12 @@ class SignUpForm(forms.ModelForm):
             password = self.cleaned_data.get('new_password'),
         )
         return user
+
+
+class BankTransferForm(forms.ModelForm):
+    class Meta:
+        model = BankTransfer
+        fields=['invoice_number', 'pay', 'paid']
+    def clean(self):
+        pass
 
