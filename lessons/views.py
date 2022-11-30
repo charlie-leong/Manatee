@@ -6,8 +6,8 @@ from .models import Request
 
 from email import message
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LogInForm, RequestForm
-from django.contrib.auth import authenticate, login
+from .forms import *
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 def home(request):
@@ -50,7 +50,7 @@ def request_lessons(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(request.user)
             return HttpResponseRedirect(reverse('request-display'))
         # invalid form input
         messages.add_message(request, messages.ERROR, "Invalid form input")
@@ -62,3 +62,20 @@ def request_lessons(request):
 def request_display(request):
     allRequests = Request.objects.all()
     return render (request, 'request-display.html', {'allRequests':allRequests})
+
+def log_out(request):
+    logout(request)
+    return redirect("home")
+    
+def bank_transfer(request):
+    if request.method == 'POST':
+      form = BankTransferForm(request.POST)
+      if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('transfer-display'))
+
+    form = BankTransferForm(request.POST or None)
+    return render(request, 'bank-transfer.html',{'form':form})
+
+def transfer_display(request):
+    return render(request, 'transfer-display.html')

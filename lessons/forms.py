@@ -1,7 +1,6 @@
 from django.core.validators import RegexValidator
 from django import forms
-from .models import User
-from .models import Request
+from .models import *
 
 class RequestForm(forms.ModelForm):
     class Meta:
@@ -18,7 +17,7 @@ class RequestForm(forms.ModelForm):
     def clean(self):
         pass
 
-    def save(self, inputId = 1):
+    def save(self, user):
         super().save(commit=False)
         request = Request.objects.create(
             availability = self.cleaned_data.get("availability"),
@@ -26,8 +25,7 @@ class RequestForm(forms.ModelForm):
             interval = self.cleaned_data.get("interval"),
             duration = self.cleaned_data.get("duration"),
             extra_info = self.cleaned_data.get("extra_info"),
-            # created_by = User.objects.get(id = request.session["_auth_user_id"])
-            created_by = User.objects.get(id = inputId)
+            created_by = user
         )
         return request
 
@@ -69,4 +67,12 @@ class SignUpForm(forms.ModelForm):
             password = self.cleaned_data.get('new_password'),
         )
         return user
+
+
+class BankTransferForm(forms.ModelForm):
+    class Meta:
+        model = BankTransfer
+        fields=['invoice_number', 'pay', 'paid']
+    def clean(self):
+        pass
 

@@ -1,16 +1,34 @@
-<html>
-<head>
-  <title>lessons</title>
-</head>
-<body>
-  <h1>log_in</h1>
-  {% for message in messages %}
-  <p> <b> {{ message }}</b> </p>
-  {% endfor %}
-  <form action="{% url 'log_in'%}" method='post'>
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type='submit' value='Log in'>
-  </form>
-</body>
-</html>
+
+
+{%extends 'base.html'%}
+{%load static%}
+
+
+{% block title %}LogIn{% endblock %}
+
+
+{%block navbar%}
+<a class='nav-link' href="{% url 'sign_up' %}">Sign Up</a>
+{%endblock%}
+
+
+
+{%block jumbotron%}
+Log In{%endblock%}
+
+
+
+
+
+{% block content %}
+{% for message in messages %}
+<p> <b> {{ message }}</b> </p>
+{% endfor %}
+<form action="{% url 'log_in'%}" method='post'>
+{% csrf_token %}
+{{ form.as_p }}
+<input type='submit' value='Log in'>
+</form>
+
+
+{% endblock %}
