@@ -3,6 +3,7 @@ from .forms import RequestForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Request
+from django.contrib.auth.decorators import login_required
 
 from email import message
 from django.shortcuts import render, redirect
@@ -13,6 +14,7 @@ from django.contrib import messages
 def home(request):
     return render(request, 'home.html')
 
+@login_required
 def dashboard(request):
     return render(request, "dashboard.html")
 
