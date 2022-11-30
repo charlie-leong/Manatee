@@ -1,37 +1,19 @@
 {%extends 'base.html'%}
-{%load static%}
 
+{% block title %}
+Manatee Music School Management System
+{% endblock %}
 
-{% block title %}Home{% endblock %}
-
-<!--if not logged in-->
-
-{%block navbar%}
-<a class='nav-link' href="{% url 'log_in' %}">Log In</a>
-<a class='nav-link' href="{% url 'sign_up' %}">Sign Up</a>
-{%endblock%}
-
-
-
-{%block jumbotron%}
-Music School Management System
-{%endblock%}
-
-
-
-
-
-{% block content %}
-<h2 class="jumbotron"> Welcome! </h2>
+{% block body %}
+<h2> Welcome! </h2>
 
 <div class="container px-4 text-center">
-    <div class="col gx-5">
-        <a href="{% url 'request-lessons' %}" class="btn btn-outline-secondary">Request a lesson</a>
-        <a href="{% url 'request-display' %}" class="btn btn-outline-secondary">See Requests</a>
-    </div>
+  <div class="col gx-5">
+    <a href="{% url 'log_in' %}" class="btn btn-outline-secondary">Log in</a>
+    <a href="{% url 'sign_up' %}" class="btn btn-outline-secondary">Sign up</a>
   </div>
+</div>
 
- 
 {% endblock %}
 
 

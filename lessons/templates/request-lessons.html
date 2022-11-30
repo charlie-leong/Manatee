@@ -1,22 +1,22 @@
-
-
-{%extends 'base.html'%}
+{%extends 'base_content.html'%}
 {%load static%}
 
-{% block title %}Request Lessons{% endblock %}
-
-
-{%block jumbotron%}
-Request Lessons
-{%endblock%}
-
+{% block title %}
+MSMS - Request a lesson
+{% endblock %}
 
 {% block content %}
-    <form action="{% url 'request-lessons' %}" method="post">
-        {% csrf_token %} 
-        {{ form.as_p }}
-        <input type="submit" value="Request lesson">
-        <input type="reset" value="Clear">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="{% url 'request-lessons' %}" method="post">
+                {% csrf_token %} 
+                {% include "partials/bootstrap_form.html" with form=form %}
+                <input type="submit" value="Request lesson">
+                <input type="reset" value="Clear">
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 

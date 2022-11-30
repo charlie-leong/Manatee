@@ -43,7 +43,7 @@ class SignUpForm(forms.ModelForm):
         widget=forms.PasswordInput(),
         validators = [RegexValidator(
             regex= r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',  #?= checks if something is coming up ahead
-            message = "password must have uppercase, lowercase and a number"
+            message = "Password must have uppercase, lowercase and a number!"
 
         )]
     )
@@ -55,7 +55,7 @@ class SignUpForm(forms.ModelForm):
         new_password = self.cleaned_data.get('new_password')
         password_confirmation = self.cleaned_data.get('password_confirmation')
         if new_password != password_confirmation:
-            self.add_error('password_confirmation', 'confirmation does not match pasword')
+            self.add_error('password_confirmation', 'Confirmation does not match pasword!')
 
     def save(self):
         super().save(commit=False)

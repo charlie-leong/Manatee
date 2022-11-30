@@ -7,7 +7,7 @@ from .models import Request
 from email import message
 from django.shortcuts import render, redirect
 from .forms import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 def home(request):
@@ -63,6 +63,10 @@ def request_display(request):
     allRequests = Request.objects.all()
     return render (request, 'request-display.html', {'allRequests':allRequests})
 
+def log_out(request):
+    logout(request)
+    return redirect("home")
+    
 def bank_transfer(request):
     if request.method == 'POST':
       form = BankTransferForm(request.POST)
