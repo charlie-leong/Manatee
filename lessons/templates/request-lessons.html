@@ -1,5 +1,6 @@
 {%extends 'base_content.html'%}
 {%load static%}
+{% load widget_tweaks %}
 
 {% block title %}
 MSMS - Request a lesson
@@ -7,17 +8,29 @@ MSMS - Request a lesson
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <form action="{% url 'request-lessons' %}" method="post">
-                {% csrf_token %} 
-                {% include "partials/bootstrap_form.html" with form=form %}
-                <input type="submit" value="Request lesson">
-                <input type="reset" value="Clear">
+    <div class="d-flex flex-column">
+        <div class="mb-4">
+            <h1>Request lessons</h1>
+            <p>Please fill in the form according to your request requirements.</p>
         </div>
+        <form action="{% url 'request-lessons' %}" method="post">
+            {% csrf_token %}
+            {{form.non_field_errors}}
+            {% for field in form %}
+            <div class="mb-3">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {% if field.name == 'extra_info' %}
+                {% render_field field class="form-control" %}
+                {% else %}
+                {% render_field field class="form-select" %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" value="Submit request" class="btn btn-primary">
+            <input type="reset" value="Clear" class="btn btn-secondary">
     </div>
+</div>
 </div>
 
 {% endblock %}
-
-

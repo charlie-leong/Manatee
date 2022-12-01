@@ -8,15 +8,6 @@ class RequestForm(forms.ModelForm):
         fields=['availability', 'number_of_lessons', 'duration', 'interval', 'extra_info']
         widgets = {'extra_info': forms.Textarea()}
 
-    interval = forms.IntegerField(
-        min_value=2,
-        max_value=14,
-        error_messages={"min_value": "Cannot request lessons for a period shorter than 2 days.", "max_value": "Cannot request lessons for a period longer than 14 days."}
-        )
-        
-    def clean(self):
-        pass
-
     def save(self, user):
         super().save(commit=False)
         request = Request.objects.create(
