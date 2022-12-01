@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{% block title %}Record Trasfer{% endblock %}
+
+
+{%block jumbotron%}
+Record Bank Transfer
+{%endblock%}
+
+
+{% block content %}
+    <form action="{% url 'bank-transfer' %}" method="post">
+        {% csrf_token %} 
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+        <input type="reset" value="Clear">
+
+{% endblock %}
