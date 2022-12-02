@@ -20,22 +20,33 @@ class LessonModelTestCase(TestCase):
             paid = False
         )
     
-    def assert_request_is_valid(self):
+    def assert_lesson_is_valid(self):
         try:
             self.lesson.full_clean()
         except( ValidationError):
             self.fail("lesson should be valid")
 
-    def assert_request_is_invalid(self):
+    def assert_lesson_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.lesson.full_clean()
 
     
     def test_correct_student_id_length(self):
         self.lesson.assigned_student_id = "123456789"
-        self.assert_request_is_invalid()
+        self.assert_lesson_is_invalid()
 
     def test_max_student_id_length(self):
         self.lesson.assigned_student_id = "123456789012"
-        self.assert_request_is_invalid()
+        self.assert_lesson_is_invalid()
     
+    def test_correct_teacher_id_length(self):
+        self.lesson.assigned_teacher_id = "123456789"
+        self.assert_lesson_is_invalid()
+
+    def test_max_teacher_id_length(self):
+        self.lesson.assigned_teacher_id = "123456789012"
+        self.assert_lesson_is_invalid()
+
+    def test_invalid_duration(self):
+            self.lesson.duration = 32
+            self._assert_lesson_is_invalid()
