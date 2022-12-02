@@ -1,20 +1,31 @@
 {%extends 'base.html'%}
-
+{% load static %}
 {% block title %}
 Manatee Music School Management System
 {% endblock %}
 
 {% block body %}
-<h2> Welcome! </h2>
-
-<div class="container px-4 text-center">
-  <div class="col gx-5">
-    <a href="{% url 'log_in' %}" class="btn btn-outline-secondary">Log in</a>
-    <a href="{% url 'sign_up' %}" class="btn btn-outline-secondary">Sign up</a>
+<div class="container d-flex pt-5 align-items-center">
+  <div style="margin-right: 4em; width: 50%;">
+    <div>
+      <h1>Let's make music teaching simple</h1>
+      <p>Book lessons with our professional teachers that will duis dignissim dapibus mi et tempus. Etiam ut ultricies
+        enim.
+        Fusce et lectus tellus. Donec maximus tristique quam, ut venenatis velit dignissim in. Suspendisse facilisis dui
+        sed
+        justo maximus, interdum rhoncus mi consequat. In hac habitasse platea dictumst. Mauris eget luctus eros. Integer
+        et
+        dictum nisl. Curabitur semper est in elit scelerisque, eu placerat lectus placerat. Duis purus enim, tincidunt
+        eget
+        tincidunt ut, volutpat sit amet magna. </p>
+    </div>
+    <div class="mt-4">
+      <a href="{% url 'sign_up' %}" class="btn px-4 btn-dark me-2">Sign up</a>
+      <a href="{% url 'log_in' %}" class="btn px-4 btn-dark">Log in</a>
+    </div>
+  </div>
+  <div style="width: 40%">
+    <img src="{% static './svg/hero.svg' %}">
   </div>
 </div>
-
 {% endblock %}
-
-
-
