@@ -48,8 +48,8 @@ class BankTransfer(models.Model):
 class Lesson(models.Model):
     assigned_student_id = models.CharField(max_length = 10)
     assigned_teacher_id = models.CharField(max_length = 10)
-    number_of_lessons = models.PositiveIntegerField(default=1)
-    week_interval = models.PositiveIntegerField(default=1)
+    number_of_lessons = models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
+    week_interval = models.PositiveIntegerField(default=2)
     duration = models.PositiveIntegerField(default=60)
     paid = False
 

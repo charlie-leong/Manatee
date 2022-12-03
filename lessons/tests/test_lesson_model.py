@@ -17,13 +17,12 @@ class LessonModelTestCase(TestCase):
             number_of_lessons = 2,
             week_interval = 1,
             duration = 60,
-            paid = False
         )
     
     def assert_lesson_is_valid(self):
         try:
             self.lesson.full_clean()
-        except( ValidationError):
+        except(ValidationError):
             self.fail("lesson should be valid")
 
     def assert_lesson_is_invalid(self):
@@ -48,5 +47,14 @@ class LessonModelTestCase(TestCase):
         self.assert_lesson_is_invalid()
 
     def test_invalid_duration(self):
-            self.lesson.duration = 32
-            self._assert_lesson_is_invalid()
+            self.lesson.duration = 47
+            self.assert_lesson_is_invalid()
+    
+    def test_less_than_minimum_week_interval(self):
+            self.lesson.interval = 1
+            self.assert_lesson_is_invalid()
+
+
+    def test_invalid_number_of_lessons(self):
+            self.lesson.interval = 5
+            self.assert_lesson_is_invalid()
