@@ -51,6 +51,7 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+@login_required
 def request_lessons(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
@@ -63,15 +64,17 @@ def request_lessons(request):
     form = RequestForm(request.POST or None)
     return render(request, 'request-lessons.html', {'form': form})
 
-
+@login_required
 def request_display(request):
     allRequests = Request.objects.all()
     return render (request, 'request-display.html', {'allRequests':allRequests})
 
+@login_required
 def log_out(request):
     logout(request)
     return redirect("home")
-    
+
+@login_required
 def bank_transfer(request):
     if request.method == 'POST':
       form = BankTransferForm(request.POST)
@@ -82,5 +85,6 @@ def bank_transfer(request):
     form = BankTransferForm(request.POST or None)
     return render(request, 'bank-transfer.html',{'form':form})
 
+@login_required
 def transfer_display(request):
     return render(request, 'transfer-display.html')
