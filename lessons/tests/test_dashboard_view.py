@@ -1,10 +1,10 @@
 from re import T
 from django.test import TestCase
 from django.urls import reverse
-from .helpers import reverse_with_next
+from .helpers import reverse_with_next, LogInTester
 from lessons.models import User
 
-class DashboardViewTestCase(TestCase):
+class DashboardViewTestCase(TestCase, LogInTester):
 
     def setUp(self):
         self.url = reverse("dashboard")
@@ -27,8 +27,9 @@ class DashboardViewTestCase(TestCase):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     # test get dashboard view
-    def tests_get_dashboard_view(self):
-        self.client.login(username=self.user.username, password=self.user.password)
+    def test_get_dashboard_view(self):
+        self.client.login(username="@johndoe", password="Password123")
+        self.assertTrue(self._is_logged_in())
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "dashboard.html")

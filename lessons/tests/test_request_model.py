@@ -79,7 +79,3 @@ class RequestModelTestCase(TestCase):
             user.delete()
             with self.assertRaises(Request.DoesNotExist):
                 Request.objects.get(created_by = id)
-            
-
-
-            
