@@ -3,7 +3,7 @@ from lessons.forms import RequestForm
 from lessons.models import User, Request
 from django.urls import reverse
 from django.contrib import messages
-from .helpers import LogInTester
+from lessons.tests.helpers import LogInTester
 from django.contrib.auth.models import AnonymousUser
 
 

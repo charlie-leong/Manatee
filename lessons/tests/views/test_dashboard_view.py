@@ -1,7 +1,7 @@
 from re import T
 from django.test import TestCase
 from django.urls import reverse
-from .helpers import reverse_with_next
+from lessons.tests.helpers import reverse_with_next
 from lessons.models import User
 
 class DashboardViewTestCase(TestCase):
