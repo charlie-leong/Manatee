@@ -1,8 +1,28 @@
-<html>
-<head>
-  <title>Music School Management Systen</title>
-</head>
-<body>
-  <p>This will be the dashboard page after logging in</p>
-</body>
-</html>
+{% extends "base_content.html" %}
+
+{% block title %}
+MSMS - Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h1>Welcome</h1>
+      <p>This will be the dashboard page after logging in</p>
+      <a href='{% url 'log_out' %}'>Logout</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <p class="text-center">Here goes table for pending requests</p>
+    </div>
+    <div class="col-md-6">
+      <p class="text-center">Here goes table for upcoming lessons?</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
