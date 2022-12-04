@@ -1,12 +1,12 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .models import Request
 from django.contrib.auth.decorators import login_required
-
 from django.shortcuts import render, redirect
-from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+
+from .models import Request
+from .forms import LogInForm, RequestForm, SignUpForm, BankTransferForm
 from .helpers import login_prohibited
 
 def home(request):
@@ -59,14 +59,13 @@ def request_lessons(request):
             return HttpResponseRedirect(reverse('request-display'))
         # invalid form input
         messages.add_message(request, messages.ERROR, "Invalid form input")
-        
     form = RequestForm(request.POST or None)
     return render(request, 'request-lessons.html', {'form': form})
 
 @login_required
 def request_display(request):
-    allRequests = Request.objects.all()
-    return render (request, 'request-display.html', {'allRequests':allRequests})
+    all_requests = Request.objects.all()
+    return render (request, 'request-display.html', {'allRequests':all_requests})
 
 @login_required
 def log_out(request):
