@@ -21,6 +21,7 @@ def dashboard(request):
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
+        next = request.POST.get('next') or ''
         if form.is_valid():
             #extract and verify username passwrod combo
             username = form.cleaned_data.get('username')
@@ -28,12 +29,14 @@ def log_in(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('dashboard')
+                redirect_url = next or "dashboard"
+                return redirect(redirect_url)
         # If invalid login details
         messages.add_message(request, messages.ERROR, "Invalid username or password")
-        
+    else:
+        next = request.GET.get('next') or ''
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    return render(request, 'log_in.html', {'form': form, "next" : next})
 
 
 def sign_up(request):
