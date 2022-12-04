@@ -1,0 +1,13 @@
+[
+    {
+        "model" : "lessons.user",
+        "pk" : 2,
+        "fields" : {
+            "username" : "@janedoe",
+            "first_name" : "Jane",
+            "last_name" : "Doe",
+            "email" : "jane.doe@example.org",
+            "password" : "pbkdf2_sha256$390000$8c2OkjeJgHynsPgxNhZ6yO$qQq7ys2+dCqTS/JKIg3ECwwGTFJzA/sLQsxLLqv9c6U="
+        }
+    }
+]
