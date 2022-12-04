@@ -1,20 +1,19 @@
 from re import T
 from django.test import TestCase
 from django.urls import reverse
-from .helpers import reverse_with_next
+from lessons.tests.helpers import reverse_with_next
 from lessons.models import User
+from lessons.tests.helpers import LogInTester
 
-class DashboardViewTestCase(TestCase):
+class DashboardViewTestCase(TestCase, LogInTester):
+
+    fixtures = [
+        "lessons/tests/fixtures/default_user.json"
+    ]
 
     def setUp(self):
         self.url = reverse("dashboard")
-        self.user = User.objects.create_user(
-            "@johndoe",
-            first_name = "John",
-            last_name = "Doe",
-            email = "johndoe@example.org",
-            password = "Password123"
-        )
+        self.user = User.objects.get(username = "@johndoe")
 
     # test that the url is correct
     def test_dashboard_view_has_correct_url(self):
@@ -28,7 +27,8 @@ class DashboardViewTestCase(TestCase):
 
     # test get dashboard view
     def tests_get_dashboard_view(self):
-        self.client.login(username=self.user.username, password=self.user.password)
+        self.client.login(username=self.user.username, password="Password123")
+        self.assertTrue(self._is_logged_in())
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "dashboard.html")

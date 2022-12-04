@@ -3,7 +3,7 @@ from lessons.forms import SignUpForm
 from django.urls import reverse
 from lessons.models import User
 from django.contrib.auth.hashers import check_password
-from .helpers import LogInTester
+from lessons.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
 
