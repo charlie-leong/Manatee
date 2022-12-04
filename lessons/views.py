@@ -1,15 +1,13 @@
-from django.shortcuts import render
-from .forms import RequestForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Request
 from django.contrib.auth.decorators import login_required
 
-from email import message
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .helpers import login_prohibited
 
 def home(request):
     return render(request, 'home.html')
@@ -18,6 +16,7 @@ def home(request):
 def dashboard(request):
     return render(request, "dashboard.html")
 
+@login_prohibited
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
@@ -38,7 +37,7 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form, "next" : next})
 
-
+@login_prohibited
 def sign_up(request):
     if request.method == 'POST':
         # contains a dictionary of data that has been  posted

@@ -7,7 +7,12 @@ from lessons.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
 
+    fixtures = [
+        "lessons/tests/fixtures/default_user.json"
+    ]
+
     def setUp(self):
+        self.user = User.objects.get(username = "@johndoe")
         self.url = reverse("sign_up")
         self.form_input = {
             "first_name" : "Jane",
@@ -59,3 +64,22 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(user.email, "janedoe@example.org")
         self.assertTrue(check_password("Password123", user.password))
         self.assertTrue(self._is_logged_in())
+    
+    # test get sign up redirects to dashboard if user is already logged in
+    def test_get_sign_up_redirects_to_dashboard_if_user_is_logged_in(self):
+        redirect_url = reverse("dashboard")
+        self.client.login(username = self.user.username, password = "Password123")
+        response = self.client.get(self.url, follow = True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
+        self.assertTemplateUsed(response, "dashboard.html")
+
+    # test post sign_up redirects to dashboard if user is already logged in
+    def test_post_sign_up_redirects_to_dashboard_if_user_is_logged_in(self):
+        redirect_url = reverse("dashboard")
+        self.client.login(username = self.user.username, password = "Password123")
+        before = User.objects.count()
+        response = self.client.post(self.url, self.form_input, follow = True)
+        after = User.objects.count()
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
+        self.assertTemplateUsed(response, "dashboard.html")
+        self.assertEqual(before, after)

@@ -129,3 +129,23 @@ class LogInViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, form_input)
         next = response.context['next']
         self.assertEqual(next, redirect_url)
+
+    # test get log in redirects to dashboard if user is already logged in
+    def test_get_log_in_redirects_to_dashboard_if_user_is_logged_in(self):
+        redirect_url = reverse("dashboard")
+        self.client.login(username = self.user.username, password = "Password123")
+        response = self.client.get(self.url, follow = True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
+        self.assertTemplateUsed(response, "dashboard.html")
+
+    # test post log in redirects to dashboard if user is already logged in
+    def test_post_log_in_redirects_to_dashboard_if_user_is_logged_in(self):
+        redirect_url = reverse("dashboard")
+        form_input = {
+            "username" : self.user.username,
+            "password" : "WrongPassword123"
+        }
+        self.client.login(username = self.user.username, password = "Password123")
+        response = self.client.post(self.url, form_input, follow = True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
+        self.assertTemplateUsed(response, "dashboard.html")
