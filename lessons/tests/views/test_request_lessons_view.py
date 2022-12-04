@@ -3,20 +3,19 @@ from lessons.forms import RequestForm
 from lessons.models import User, Request
 from django.urls import reverse
 from django.contrib import messages
-from .helpers import LogInTester
+from lessons.tests.helpers import LogInTester
 from django.contrib.auth.models import AnonymousUser
 
 
 class RequestViewTestCase(TestCase, LogInTester):
+
+    fixtures = [
+        "lessons/tests/fixtures/default_user.json"
+    ]
+
     def setUp(self):
         self.url = reverse("request-lessons")
-        self.user = User.objects.create_user(
-            "@johndoe",
-            first_name = "John",
-            last_name = "Doe",
-            email = "johndoe@example.org",
-            password = "Password123"
-        )
+        self.user = User.objects.get(username = "@johndoe")
         self.formInput = {
             "availability": "wednesday",
             "number_of_lessons": 2,
