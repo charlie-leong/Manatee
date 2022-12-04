@@ -28,6 +28,7 @@ class RequestViewTestCase(TestCase, LogInTester):
         self.assertEqual(self.url, "/request-lessons/")
     
     def test_get_request_lessons_view(self):
+        self.client.login(username = self.user.username, password = "Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "request-lessons.html")
@@ -54,16 +55,17 @@ class RequestViewTestCase(TestCase, LogInTester):
         self.assertEqual(len(response_messages), 0)
     
     def test_unsuccessful_lesson_request_from_not_logged_in_user(self):
-        logIn = self.client.post(reverse("log_in"), {"username": self.user.username, "password": "IncorrectPassword"}, follow= True)    # user will not get logged in
+        #logIn = self.client.post(reverse("log_in"), {"username": self.user.username, "password": "IncorrectPassword"}, follow= True)    # user will not get logged in
         self.assertFalse(self._is_logged_in())
         before = Request.objects.count()
-        self.assertIsInstance(logIn.context["user"], AnonymousUser)     # not a logged in user
-        with self.assertRaises(ValueError):
-            self.client.post(self.url, self.formInput, follow= True)
+        #self.assertIsInstance(logIn.context["user"], AnonymousUser)     # not a logged in user
+        #with self.assertRaises(ValueError):
+        response = self.client.post(self.url, self.formInput)
+        self.assertEqual(response.status_code, 302)
         after = Request.objects.count()
         self.assertEqual(after, before)
-        with self.assertRaises(Request.DoesNotExist):
-            Request.objects.get(created_by = logIn.context["user"].id)
+        #with self.assertRaises(Request.DoesNotExist):
+        #   Request.objects.get(created_by = logIn.context["user"].id)
 
     def test_unsuccessful_lesson_request(self):
         self.client.post(reverse("log_in"), {"username": self.user.username, "password": "Password123"}, follow= True)

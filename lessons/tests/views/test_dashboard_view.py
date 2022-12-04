@@ -1,9 +1,7 @@
-from re import T
 from django.test import TestCase
 from django.urls import reverse
-from lessons.tests.helpers import reverse_with_next
+from lessons.tests.helpers import reverse_with_next, LogInTester
 from lessons.models import User
-from lessons.tests.helpers import LogInTester
 
 class DashboardViewTestCase(TestCase, LogInTester):
 
