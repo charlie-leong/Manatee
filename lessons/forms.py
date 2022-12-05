@@ -31,13 +31,13 @@ class RequestForm(forms.ModelForm):
 
 
 class LogInForm(forms.Form): #not associated with a particular user model
-    username = forms.CharField(label="Username")
+    email = forms.CharField(label="email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
 
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email']
+        fields = ['first_name', 'last_name', 'email']
     new_password = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(),

@@ -20,15 +20,15 @@ def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
         if form.is_valid():
-            #extract and verify username passwrod combo
-            username = form.cleaned_data.get('username')
+            #extract and verify email password combo
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('dashboard')
         # If invalid login details
-        messages.add_message(request, messages.ERROR, "Invalid username or password")
+        messages.add_message(request, messages.ERROR, "Invalid email or password")
         
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})

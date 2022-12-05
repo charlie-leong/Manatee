@@ -26,13 +26,13 @@ class Request(models.Model):
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
-    username = models.CharField(
-        max_length=30,
-        unique=True,
-        validators = [RegexValidator(
-            regex= r'^@\w{3,}$',
-            message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
-        )])
+    # username = models.CharField(
+    #     max_length=30,
+    #     unique=True,
+    #     validators = [RegexValidator(
+    #         regex= r'^@\w{3,}$',
+    #         message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
+    #     )])
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)

@@ -10,7 +10,6 @@ class LogInViewTestCase(TestCase, LogInTester):
     def setUp(self):
         self.url = reverse("log_in")
         self.user = User.objects.create_user(
-            "@johndoe",
             first_name = "John",
             last_name = "Doe",
             email = "johndoe@example.org",
@@ -35,7 +34,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test unsuccessful login
     def test_unsuccessful_log_in(self):
         form_input = {
-            "username" : "@johndoe",
+            "email" : "johndoe@example.org",
             "password" : "Wrongpassword123"
         }
         response = self.client.post(self.url, form_input)
@@ -52,7 +51,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test successful login
     def test_succesful_log_in(self):
         form_input = {
-            'username': '@johndoe', 
+            'email': 'johndoe@example.org', 
             'password': 'Password123'
         }
         response = self.client.post(self.url, form_input, follow=True)
@@ -66,7 +65,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test correct redirect after successful login
     def test_correct_redirect_after_successful_login(self):
         form_input = {
-            "username" : "@johndoe",
+            "email" : "johndoe@example.org",
             "password" : "Password123"
         }
         response = self.client.post(self.url, form_input, follow = True)
@@ -81,7 +80,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.user.is_active = False
         self.user.save()
         form_input = {
-            "username" : "@johndoe",
+            "email" : "johndoe@example.org",
             "password" : "Password123"
         }
         response = self.client.post(self.url, form_input)
