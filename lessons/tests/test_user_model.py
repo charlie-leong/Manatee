@@ -42,3 +42,13 @@ class UserModelTestCase(TestCase):
         )
         self.user.email = self.second_user.email
         self._assert_user_is_invalid()
+    
+    def test_unique_username(self):
+        self.second_user = User.objects.create_user(
+            first_name = "Jane",
+            last_name = "Doe",
+            email = "janedoe@example.org",
+            password = "Password123"
+        )
+        self.user.username = self.second_user.username
+        self._assert_user_is_invalid()
