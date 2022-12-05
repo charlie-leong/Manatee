@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
-from .models import Request
+from .models import Request, BankTransfer
 from .forms import LogInForm, RequestForm, SignUpForm, BankTransferForm
 from .helpers import login_prohibited
 
@@ -76,6 +76,7 @@ def log_out(request):
 def bank_transfer(request):
     if request.method == 'POST':
       form = BankTransferForm(request.POST)
+      #form.user_ID = user.id
       if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('transfer-display'))
@@ -85,4 +86,5 @@ def bank_transfer(request):
 
 @login_required
 def transfer_display(request):
-    return render(request, 'transfer-display.html')
+    all_transfers= BankTransfer.objects.all()
+    return render(request, 'transfer-display.html', {'allTransfers':all_transfers})

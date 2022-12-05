@@ -19,4 +19,3 @@ class BankTransferAdmin(admin.ModelAdmin):
     list_display = [
         "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
     ]
-
