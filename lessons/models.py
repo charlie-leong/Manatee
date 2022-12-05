@@ -26,6 +26,7 @@ class Request(models.Model):
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
+    username = id
     # username = models.CharField(
     #     max_length=30,
     #     unique=True,
