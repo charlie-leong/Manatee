@@ -34,7 +34,7 @@ class User(AbstractUser):
     #         message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
     #     )])
     first_name = models.CharField(max_length=50, blank=False)
-    username = models.CharField(default=str("@" + str(first_name)))
+    username = models.CharField(max_length=51, default=str("@" + str(first_name)))
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
     bank_balance = models.PositiveIntegerField()
