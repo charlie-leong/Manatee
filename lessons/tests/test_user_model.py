@@ -6,7 +6,6 @@ from lessons.models import User
 class UserModelTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            "@johndoe",
             first_name = "John",
             last_name = "Doe",
             email = "johndoe@example.org",
@@ -27,20 +26,19 @@ class UserModelTestCase(TestCase):
         self._asser_user_is_valid()
     
     def test_invalid_user(self):
-        self.user.username = "invalid_username"
+        self.user.email = "invalid_email"
         self._assert_user_is_invalid()
     
-    def test_no_blank_username(self):
-        self.user.username = ""
+    def test_no_blank_email(self):
+        self.user.email = ""
         self._assert_user_is_invalid()
 
-    def test_unique_username(self):
+    def test_unique_email(self):
         self.second_user = User.objects.create_user(
-            "@janedoe",
             first_name = "Jane",
             last_name = "Doe",
             email = "janedoe@example.org",
             password = "Password123"
         )
-        self.user.username = self.second_user.username
+        self.user.email = self.second_user.email
         self._assert_user_is_invalid()

@@ -11,7 +11,6 @@ class SignUpFormTestCase(TestCase):
         self.form_input = {
             "first_name" : "Jane",
             "last_name" : "Doe",
-            "username" : "@janedoe",
             "email" : "janedoe@example.org",
             "new_password" : "Password123",
             "password_confirmation" : "Password123",
@@ -26,7 +25,6 @@ class SignUpFormTestCase(TestCase):
         form = SignUpForm()
         self.assertIn("first_name", form.fields)
         self.assertIn("last_name", form.fields)
-        self.assertIn("username", form.fields)
         self.assertIn("first_name", form.fields)
         self.assertIn("new_password", form.fields)
         pw_field_widget = form.fields["new_password"].widget
@@ -37,7 +35,7 @@ class SignUpFormTestCase(TestCase):
 
     #form uses model validation
     def test_form_uses_user_validation(self):
-        self.form_input["username"] = "janedoe"
+        self.form_input["email"] = "janedoe@example.org"
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
@@ -73,8 +71,7 @@ class SignUpFormTestCase(TestCase):
         form.save()
         after = User.objects.count()
         self.assertEqual(after, before + 1)
-        user = User.objects.get(username = "@janedoe")
+        user = User.objects.get(email = "janedoe@example.org")
         self.assertEqual(user.first_name, "Jane")
         self.assertEqual(user.last_name, "Doe")
-        self.assertEqual(user.email, "janedoe@example.org")
         self.assertTrue(check_password("Password123", user.password))
