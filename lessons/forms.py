@@ -31,7 +31,7 @@ class RequestForm(forms.ModelForm):
 
 
 class LogInForm(forms.Form): #not associated with a particular user model
-    username = forms.CharField(label="Username")
+    email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
 
 class SignUpForm(forms.ModelForm):

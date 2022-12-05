@@ -22,16 +22,16 @@ def log_in(request):
         form = LogInForm(request.POST)
         next = request.POST.get('next') or ''
         if form.is_valid():
-            #extract and verify username passwrod combo
-            username = form.cleaned_data.get('username')
+            #extract and verify email passwrod combo
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
                 redirect_url = next or "dashboard"
                 return redirect(redirect_url)
         # If invalid login details
-        messages.add_message(request, messages.ERROR, "Invalid username or password")
+        messages.add_message(request, messages.ERROR, "Invalid email or password")
     else:
         next = request.GET.get('next') or ''
     form = LogInForm()
