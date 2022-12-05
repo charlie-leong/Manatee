@@ -9,6 +9,7 @@ class SignUpFormTestCase(TestCase):
 
     def setUp(self):
         self.form_input = {
+            "username": "@johndoe",
             "first_name" : "Jane",
             "last_name" : "Doe",
             "email" : "janedoe@example.org",

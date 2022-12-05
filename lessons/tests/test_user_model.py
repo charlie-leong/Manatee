@@ -35,6 +35,7 @@ class UserModelTestCase(TestCase):
 
     def test_unique_email(self):
         self.second_user = User.objects.create_user(
+            username = "@johndoe",
             first_name = "Jane",
             last_name = "Doe",
             email = "janedoe@example.org",
@@ -45,6 +46,7 @@ class UserModelTestCase(TestCase):
     
     def test_unique_username(self):
         self.second_user = User.objects.create_user(
+            username = "@janedoe",
             first_name = "Jane",
             last_name = "Doe",
             email = "janedoe@example.org",

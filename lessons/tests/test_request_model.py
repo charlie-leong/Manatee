@@ -7,6 +7,7 @@ class RequestModelTestCase(TestCase):
 
         def setUp(self):
             self.user = User.objects.create_user(
+                '@johndoe',
             first_name = "John",
             last_name = "Doe",
             email = "johndoe@example.org",

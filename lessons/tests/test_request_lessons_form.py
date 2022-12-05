@@ -36,6 +36,7 @@ class RequestFormTestCase(TestCase):
     def test_form_saves_correctly(self):
         # create a user to provide a value for the created_by field
         user = User.objects.create_user(
+            '@johndoe',
             first_name = "John",
             last_name = "Doe",
             email = "johndoe@example.org",
