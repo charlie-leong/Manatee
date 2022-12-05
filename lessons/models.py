@@ -26,7 +26,6 @@ class Request(models.Model):
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
-    username = id
     # username = models.CharField(
     #     max_length=30,
     #     unique=True,
@@ -35,8 +34,10 @@ class User(AbstractUser):
     #         message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
     #     )])
     first_name = models.CharField(max_length=50, blank=False)
+    username = first_name
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
+    bank_balance = models.PositiveIntegerField()
    
 class BankTransfer(models.Model):
     user_ID=models.CharField(max_length=4)
