@@ -61,7 +61,7 @@ class RequestModelTestCase(TestCase):
         
         def test_greater_than_max_extra_info(self):
             string = "senirAndHowardAreEpicLecturers"
-            for _ in range(10):
+            for _ in range(100):
                 self.request.extra_info += string
             self._assert_request_is_invalid()
 

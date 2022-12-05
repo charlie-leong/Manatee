@@ -6,23 +6,38 @@ MSMS - Dashboard
 
 {% block content %}
 <div class="container">
-
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <h1>Welcome</h1>
-      <p>This will be the dashboard page after logging in</p>
-      <a href='{% url 'log_out' %}'>Logout</a>
+  {% for req in pending %}
+  <div>
+    <div>
+      <span>Specified availability:</span>
+      <span>{{req.availability.capitalize}}</span>
+    </div>
+    <div>
+      <span>Number of requested lessons:</span>
+      <span>{{req.number_of_lessons}}</span>
+    </div>
+    <div>
+      <span>Requested lesson duration:</span>
+      <span>{{req.duration}} minutes</span>
+    </div>
+    <div>
+      <span>Days between lessons:</span>
+      <span>{{req.interval}} days</span>
+    </div>
+    <div>
+      <span>Additional info:</span>
+      <span>{{req.extra_info}} TEST MAX LENGTH FOR LINE BREAK</span>
+    </div>
+    <div>
+      <span>Booking status:</span>
+      <span>{{req.is_approved}}</span>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <p class="text-center">Here goes table for pending requests</p>
-    </div>
-    <div class="col-md-6">
-      <p class="text-center">Here goes table for upcoming lessons?</p>
-    </div>
+  <div>
+    <input type="submit" value="Edit" class="btn btn-secondary">
+    <input type="button" value="Delete" class="btn btn-danger">
   </div>
+  {% endfor %}
 </div>
 
 {% endblock %}

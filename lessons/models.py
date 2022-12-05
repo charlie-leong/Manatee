@@ -18,7 +18,7 @@ INTERVALS = ((x, x) for x in range(2, 15))
 class Request(models.Model):
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(choices= INTERVALS, verbose_name="Interval (days)", default= 7, validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
+    interval = models.PositiveIntegerField(choices= INTERVALS, verbose_name="Interval (days)", default= 7, validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
     extra_info =models.CharField(max_length=750, verbose_name="Extra information", blank=True)
     created_by = models.ForeignKey("User", on_delete=models.CASCADE)

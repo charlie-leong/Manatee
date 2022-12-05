@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .forms import RequestForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .models import Request
+from .models import Request, Lesson
 
 from email import message
 from django.shortcuts import render, redirect
@@ -14,7 +14,10 @@ def home(request):
     return render(request, 'home.html')
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+    pendingReqs = Request.objects.filter(created_by = request.user, is_approved = False)
+    unpaidReqs = Lesson.objects.filter(assigned_student_id = request.user)
+    paidReqs = Lesson.objects.filter(assigned_student_id = request.user)
+    return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": unpaidReqs, "paid": paidReqs})
 
 def log_in(request):
     if request.method == 'POST':
@@ -50,18 +53,13 @@ def request_lessons(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
         if form.is_valid():
-            form.save(request.user)
-            return HttpResponseRedirect(reverse('request-display'))
+            lessonReq = form.save(request.user)
+            return HttpResponseRedirect(reverse('dashboard'))
         # invalid form input
         messages.add_message(request, messages.ERROR, "Invalid form input")
         
     form = RequestForm(request.POST or None)
     return render(request, 'request-lessons.html', {'form': form})
-
-
-def request_display(request):
-    allRequests = Request.objects.all()
-    return render (request, 'request-display.html', {'allRequests':allRequests})
 
 def log_out(request):
     logout(request)
