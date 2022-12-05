@@ -11,12 +11,19 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     list_display = [
+<<<<<<< HEAD
         "availability", "number_of_lessons", "interval", "duration", "extra_info"
+=======
+        "availability", "number_of_lessons", "interval", "duration", "extra_info", "created_by", "is_approved"
+>>>>>>> main
     ]
-
 
 @admin.register(BankTransfer)
 class BankTransferAdmin(admin.ModelAdmin):
     list_display = [
         "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
     ]
+<<<<<<< HEAD
+=======
+
+>>>>>>> main

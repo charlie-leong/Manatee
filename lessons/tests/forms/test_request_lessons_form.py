@@ -45,7 +45,7 @@ class RequestFormTestCase(TestCase):
 
         form = RequestForm(data = self.formInput)
         before = Request.objects.count()
-        form.save(user.id)
+        form.save(user)
         after = Request.objects.count()
         self.assertEqual(after, before + 1)
         request = Request.objects.get(id = 1)

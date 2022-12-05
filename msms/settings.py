@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lessons',
+    "widget_tweaks"
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #user model for authenication purpose
 AUTH_USER_MODEL = 'lessons.User'
+
+# Log in url that redirects users trying to access a log in protected view
+LOGIN_URL = "log_in"
+
+# dashboard url that redirects users who are logged in and are accessing login prohibited views
+REDIRECT_URL_WHEN_LOGGED_IN = "dashboard"
