@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{%extends 'base_content.html'%}
 {%load static%}
 
 {% block title %}All transfers{% endblock %}
@@ -9,6 +9,9 @@ All transfers{%endblock%}
 
 
 {% block content %}
-    <p> Hello </p>
+    {%for transfer in allTransfers%}
+      {{transfer.invoice_number}}
+      <p>---------</p>
+    {% endfor %}
 
 {% endblock %}
