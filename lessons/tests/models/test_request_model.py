@@ -5,18 +5,22 @@ from lessons.models import Request, User
 
 class RequestModelTestCase(TestCase):
 
-    fixtures = ["lessons/tests/fixtures/default_user.json"]
+    fixtures = [
+        "lessons/tests/fixtures/default_user.json",
+        "lessons/tests/fixtures/default_request.json"
+        ]
 
     def setUp(self):
         self.user = User.objects.get(username = "@johndoe")
-        self.request = Request.objects.create(
-            availability = "wednesday",
-            number_of_lessons= 2,
-            interval= 7,
-            duration= 60,
-            extra_info= "I would like to learn the bababooey instrument.",
-            user= self.user,
-            is_approved = False)
+        # self.request = Request.objects.create(
+        #     availability = "wednesday",
+        #     number_of_lessons= 2,
+        #     interval= 7,
+        #     duration= 60,
+        #     extra_info= "I would like to learn the bababooey instrument.",
+        #     user= self.user,
+        #     is_approved = False)
+        self.request = Request.objects.get(user = self.user)
 
     def _assert_request_is_valid(self):
         try:

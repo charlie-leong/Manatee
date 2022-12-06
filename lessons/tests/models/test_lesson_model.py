@@ -8,25 +8,15 @@ from lessons.models import Lesson, User, Request
 class LessonModelTestCase(TestCase):
 
     fixtures = [
-        "lessons/tests/fixtures/default_user.json"
+        "lessons/tests/fixtures/default_user.json",
+        "lessons/tests/fixtures/default_request.json",
+        "lessons/tests/fixtures/default_lesson.json"
     ]
 
     def setUp(self):
         self.user = User.objects.get(username="@johndoe")
-        self.request = Request.objects.create(
-            user = self.user,
-            availability = "monday",
-            number_of_lessons = 2,
-            interval = 7,
-            duration = 30,
-            extra_info = "",
-            is_approved = False
-
-        )
-        self.lesson = Lesson.objects.create(
-            request = self.request,
-            teacher = "Mr Keppens"
-        )
+        self.request = Request.objects.get(user = self.user)
+        self.lesson = Lesson.objects.get(request = self.request)
 
     def _assert_lesson_is_valid(self):
         try:
@@ -73,7 +63,7 @@ class LessonModelTestCase(TestCase):
     # calculateCost should return the correct value
     def test_calculateCost_calculates_correct_value(self):
         cost = self.lesson.calculateCost()
-        self.assertEqual(20, cost)
+        self.assertEqual(40, cost)
     
     # two lessons cannot come from the same request
     def test_lessons_must_have_unique_requests(self):
