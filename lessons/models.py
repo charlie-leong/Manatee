@@ -36,6 +36,18 @@ class Request(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default= False)
 
+class Lesson(models.Model):
+    request = models.OneToOneField(Request, on_delete=models.CASCADE, primary_key=True)
+    teacher = models.CharField(max_length = 30)
+    paid = models.BooleanField(default=False)
+
+    def calculateCost(self):
+        baseCost = 20
+        return baseCost * self.request.duration/60 * self.request.number_of_lessons
+    
+    def __str__(self):
+        return f'This lesson is taught by {self.teacher}'
+
 
 class BankTransfer(models.Model):
     user_ID=models.CharField(max_length=4)
@@ -45,22 +57,3 @@ class BankTransfer(models.Model):
     paid = models.BooleanField()
 
     balance = 0
-
-class Lesson(models.Model):
-    assigned_student_id = models.CharField(max_length = 10)
-    assigned_teacher_id = models.CharField(max_length = 10)
-    number_of_lessons = models.PositiveIntegerField(default=1)
-    week_interval = models.PositiveIntegerField(default=1)
-    duration = models.PositiveIntegerField(default=60)
-    paid = False
-
-    def togglePaid():
-        if(paid == False):
-            paid = False
-            return paid
-        paid = True
-        return paid
-
-    def calculateCost():
-        baseCost = 20
-        return baseCost * duration/60 * number_of_lessons
