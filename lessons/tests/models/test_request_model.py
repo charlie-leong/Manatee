@@ -15,7 +15,7 @@ class RequestModelTestCase(TestCase):
             interval= 7,
             duration= 60,
             extra_info= "I would like to learn the bababooey instrument.",
-            created_by= self.user,
+            user= self.user,
             is_approved = False)
 
     def _assert_request_is_valid(self):
@@ -65,8 +65,12 @@ class RequestModelTestCase(TestCase):
         self.request.is_approved = None
         self._assert_request_is_invalid()
 
-    def test_invalid_created_by(self):
-        self.request.created_by = None
+    # def test_invalid_created_by(self):
+    #     self.request.created_by = None
+    #     self._assert_request_is_invalid()
+
+    def test_invalid_user_field(self):
+        self.request.user = None
         self._assert_request_is_invalid()
 
     def test_cascade_on_delete_created_by(self):
@@ -74,4 +78,4 @@ class RequestModelTestCase(TestCase):
         id = user.id
         user.delete()
         with self.assertRaises(Request.DoesNotExist):
-            Request.objects.get(created_by = id)
+            Request.objects.get(user = id)

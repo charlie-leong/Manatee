@@ -14,16 +14,6 @@ AVAILABILITY = (
 DURATIONS = ((30, 30), (45, 45), (60, 60))
 NUM_LESSONS = ((1, 1), (2, 2), (3, 3), (4, 4))      # assuming that a request will request 4 lessons at most
 
-class Request(models.Model):
-    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
-    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
-    duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
-    extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
-    created_by = models.ForeignKey("User", on_delete=models.CASCADE)
-    is_approved = models.BooleanField(default= False)
-
-
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
     username = models.CharField(
@@ -36,6 +26,15 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
+
+class Request(models.Model):
+    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
+    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
+    interval = models.PositiveIntegerField(validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
+    duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
+    extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_approved = models.BooleanField(default= False)
 
 
 class BankTransfer(models.Model):
