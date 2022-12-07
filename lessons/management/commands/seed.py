@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 continue
     
     def generate_requests(self):
-        pks = User.objects.values_list("pk", flat=True)
+        pks = User.objects.filter(is_staff = False).values_list("pk", flat=True)
         for i in range(75):
             random_pk = random.choice(pks)
             user = User.objects.get(pk = random_pk)
@@ -55,8 +55,8 @@ class Command(BaseCommand):
             )
     
     def generate_lessons(self):
-        pks = Request.objects.values_list("pk", flat = True)
         for i in range(60):
+            pks = Request.objects.filter(is_approved = False).values_list("pk", flat = True)
             random_pk = random.choice(pks)
             request = Request.objects.get(pk = random_pk)
             try:
@@ -106,12 +106,27 @@ class Command(BaseCommand):
     
     def create_regular_user(self):
         try:
-            User.objects.create_user(
+            user = User.objects.create_user(
                 "@johndoe",
                 first_name = "John",
                 last_name = "Doe",
                 email = "john.doe@example.org",
                 password = "Password123"
+            )
+
+            request = Request.objects.create(
+                user = user,
+                availability = "THURSDAY",
+                number_of_lessons = 3,
+                interval = 1,
+                duration = 45
+            )
+
+            Lesson.objects.create(
+                request = request,
+                teacher = "Mr Keppens",
+                startDate = date(2022, 9, 3),
+                startTime = time(11, 30, 0)
             )
         except IntegrityError:
             pass
