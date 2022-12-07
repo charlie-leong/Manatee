@@ -1,0 +1,15 @@
+[
+    {
+        "model": "lessons.request",
+        "pk": 1,
+        "fields": {
+            "availability": "wednesday",
+            "number_of_lessons": 2,
+            "interval": 2,
+            "duration": 60,
+            "extra_info": "I would like to learn the bababooey instrument.",
+            "user": 1,
+            "is_approved": false
+        }
+    }
+    ]

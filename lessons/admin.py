@@ -8,14 +8,23 @@ class UserAdmin(admin.ModelAdmin):
         "username", "first_name", "last_name", "email", "is_staff", "is_superuser"
     ]
 
+class LessonInline(admin.TabularInline):
+    model = Lesson
+
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     list_display = [
-        "availability", "number_of_lessons", "interval", "duration", "extra_info", "created_by", "is_approved"
+       "id", "user", "availability", "number_of_lessons", "interval", "duration", "is_approved"
     ]
+    readonly_fields = ["is_approved"]
+    inlines = [LessonInline]
 
 @admin.register(BankTransfer)
 class BankTransferAdmin(admin.ModelAdmin):
     list_display = [
         "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
     ]
+
+@admin.register(Lesson)
+class LessonAdmin(admin.ModelAdmin):
+    list_display = ["request", "teacher", "paid"]

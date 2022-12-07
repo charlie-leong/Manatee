@@ -25,7 +25,7 @@ class RequestForm(forms.ModelForm):
             interval = self.cleaned_data.get("interval"),
             duration = self.cleaned_data.get("duration"),
             extra_info = self.cleaned_data.get("extra_info"),
-            created_by = user
+            user = user
         )
         return request
 

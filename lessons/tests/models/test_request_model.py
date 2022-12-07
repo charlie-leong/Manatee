@@ -5,18 +5,14 @@ from lessons.models import Request, User
 
 class RequestModelTestCase(TestCase):
 
-    fixtures = ["lessons/tests/fixtures/default_user.json"]
+    fixtures = [
+        "lessons/tests/fixtures/default_user.json",
+        "lessons/tests/fixtures/default_request.json",
+        ]
 
     def setUp(self):
         self.user = User.objects.get(username = "@johndoe")
-        self.request = Request.objects.create(
-            availability = "wednesday",
-            number_of_lessons= 2,
-            interval= 7,
-            duration= 60,
-            extra_info= "I would like to learn the bababooey instrument.",
-            created_by= self.user,
-            is_approved = False)
+        self.request = Request.objects.get(user = self.user)
 
     def _assert_request_is_valid(self):
         try:
@@ -65,8 +61,8 @@ class RequestModelTestCase(TestCase):
         self.request.is_approved = None
         self._assert_request_is_invalid()
 
-    def test_invalid_created_by(self):
-        self.request.created_by = None
+    def test_invalid_user_field(self):
+        self.request.user = None
         self._assert_request_is_invalid()
 
     def test_cascade_on_delete_created_by(self):
@@ -74,4 +70,7 @@ class RequestModelTestCase(TestCase):
         id = user.id
         user.delete()
         with self.assertRaises(Request.DoesNotExist):
-            Request.objects.get(created_by = id)
+            Request.objects.get(user = id)
+        
+    def test_is_not_approved_without_lesson(self):
+        self.assertFalse(self.request.is_approved)
