@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 # Create your models here.
 AVAILABILITY = (
@@ -47,6 +48,8 @@ class Request(models.Model):
 class Lesson(models.Model):
     request = models.OneToOneField(Request, on_delete=models.CASCADE, primary_key=True)
     teacher = models.CharField(max_length = 30)
+    startDate = models.DateField(default=timezone.now)
+    startTime = models.TimeField(default=timezone.now)
     paid = models.BooleanField(default=False)
 
     def calculateCost(self):
