@@ -11,7 +11,7 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     list_display = [
-        "availability", "number_of_lessons", "interval", "duration", "extra_info", "user", "is_approved"
+       "id", "user", "availability", "number_of_lessons", "interval", "duration", "is_approved"
     ]
 
 @admin.register(BankTransfer)
