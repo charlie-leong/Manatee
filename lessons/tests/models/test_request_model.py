@@ -53,7 +53,7 @@ class RequestModelTestCase(TestCase):
     
     def test_greater_than_max_extra_info(self):
         string = "senirAndHowardAreEpicLecturers"
-        for _ in range(10):
+        for _ in range(100):
             self.request.extra_info += string
         self._assert_request_is_invalid()
 
@@ -65,7 +65,7 @@ class RequestModelTestCase(TestCase):
         self.request.user = None
         self._assert_request_is_invalid()
 
-    def test_cascade_on_delete_created_by(self):
+    def test_cascade_on_delete_user(self):
         user = User.objects.get(id = self.user.id)
         id = user.id
         user.delete()

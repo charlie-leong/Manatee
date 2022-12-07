@@ -24,9 +24,10 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name = 'sign_up'),
     path('', views.home, name='home'),
     path('request-lessons/', views.request_lessons, name='request-lessons'),
-    path('request-display/',views.request_display, name='request-display'),
     path("log_out/", views.log_out, name = "log_out"),
     path('bank-transfer/', views.bank_transfer, name='bank-transfer'),
     path('transfer-display/', views.transfer_display, name='transfer-display'),
+    path('delete-request/<int:req_id>', views.deleteRequest, name='delete-request'),
+    path('edit-request/<int:req_id>', views.editRequest, name='edit-request'),
 ]
 

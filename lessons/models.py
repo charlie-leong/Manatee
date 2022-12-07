@@ -37,7 +37,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
-
+    
     def __str__(self):
         return self.username
 
@@ -48,10 +48,10 @@ class Request(models.Model):
     to it, it will automatically become approved.
     """
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
-    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, default=1)
+    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1,)
+    interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, verbose_name="Interval (weeks)", default= 1)
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
-    extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
+    extra_info =models.CharField(max_length=750, verbose_name="Extra information", blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default= False)
 

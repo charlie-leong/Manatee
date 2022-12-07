@@ -1,28 +1,43 @@
 {% extends "base_content.html" %}
-
+{% load static %}
 {% block title %}
 MSMS - Dashboard
 {% endblock %}
 
 {% block content %}
 <div class="container">
+  <h1>Dashboard</h1>
+  <p>You have {{pending.count}} pending requests</p>
+  <p>You can edit or delete pending requests. Unpaid and paid requests cannot be edited.</p>
+  <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom: 1.5rem;">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-tab-content"
+        type="button" role="tab" aria-controls="pending-tab" aria-selected="true">Pending</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="unpaid-tab" data-bs-toggle="tab" data-bs-target="#unpaid-tab-content" type="button"
+        role="tab" aria-controls="unpaid" aria-selected="false">Unpaid</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid-tab-content" type="button"
+        role="tab" aria-controls="paid" aria-selected="false">Paid</button>
+    </li>
+  </ul>
 
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <h1>Welcome</h1>
-      <p>This will be the dashboard page after logging in</p>
-      <a href='{% url 'log_out' %}'>Logout</a>
+  <div class="tab-content">
+    <div class="tab-pane active" id="pending-tab-content" role="tabpanel" aria-labelledby="pending-tab" tabindex="0">
+      {% include "partials/requests-list.html" with requests=pending reqsType="pending" %}
+    </div>
+    <div class="tab-pane" id="unpaid-tab-content" role="tabpanel" aria-labelledby="unpaid-tab" tabindex="0">
+      {% include "partials/requests-list.html" with requests=unpaid reqsType="unpaid" %}
+    </div>
+    <div class="tab-pane" id="paid-tab-content" role="tabpanel" aria-labelledby="paid-tab" tabindex="0">
+      {% include "partials/requests-list.html" with requests=paid reqsType="paid" %}
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <p class="text-center">Here goes table for pending requests</p>
-    </div>
-    <div class="col-md-6">
-      <p class="text-center">Here goes table for upcoming lessons?</p>
-    </div>
-  </div>
+
+
 </div>
 
 {% endblock %}
