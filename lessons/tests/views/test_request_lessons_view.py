@@ -19,7 +19,7 @@ class RequestViewTestCase(TestCase, LogInTester):
         self.formInput = {
             "availability": "wednesday",
             "number_of_lessons": 2,
-            "interval": 7,
+            "interval": 2,
             "duration": 60,
             "extra_info": "I would like to learn the bababooey instrument."
         }

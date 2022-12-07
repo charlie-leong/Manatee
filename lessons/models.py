@@ -29,9 +29,15 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, blank=False)
 
 class Request(models.Model):
+    WEEKLY = 1
+    FORTNIGHTLY = 2
+    LESSON_INTERVAL = [
+        (WEEKLY, "Every week"),
+        (FORTNIGHTLY, "Every 2 weeks")
+    ]
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
+    interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, default=WEEKLY)
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
     extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

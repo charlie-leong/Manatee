@@ -9,7 +9,7 @@ class RequestFormTestCase(TestCase):
         self.formInput = {
             "availability": "wednesday",
             "number_of_lessons": 2,
-            "interval": 7,
+            "interval": 2,
             "duration": 60,
             "extra_info": "I would like to learn the bababooey instrument."
         }
@@ -51,6 +51,6 @@ class RequestFormTestCase(TestCase):
         request = Request.objects.get(id = 1)
         self.assertEqual(request.availability, "wednesday")
         self.assertEqual(request.number_of_lessons, 2)
-        self.assertEqual(request.interval, 7)
+        self.assertEqual(request.interval, 2)
         self.assertEqual(request.duration, 60)
         self.assertEqual(request.user.id, user.id)
