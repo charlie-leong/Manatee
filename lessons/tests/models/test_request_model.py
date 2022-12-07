@@ -7,19 +7,11 @@ class RequestModelTestCase(TestCase):
 
     fixtures = [
         "lessons/tests/fixtures/default_user.json",
-        "lessons/tests/fixtures/default_request.json"
+        "lessons/tests/fixtures/default_request.json",
         ]
 
     def setUp(self):
         self.user = User.objects.get(username = "@johndoe")
-        # self.request = Request.objects.create(
-        #     availability = "wednesday",
-        #     number_of_lessons= 2,
-        #     interval= 7,
-        #     duration= 60,
-        #     extra_info= "I would like to learn the bababooey instrument.",
-        #     user= self.user,
-        #     is_approved = False)
         self.request = Request.objects.get(user = self.user)
 
     def _assert_request_is_valid(self):
@@ -69,10 +61,6 @@ class RequestModelTestCase(TestCase):
         self.request.is_approved = None
         self._assert_request_is_invalid()
 
-    # def test_invalid_created_by(self):
-    #     self.request.created_by = None
-    #     self._assert_request_is_invalid()
-
     def test_invalid_user_field(self):
         self.request.user = None
         self._assert_request_is_invalid()
@@ -83,3 +71,6 @@ class RequestModelTestCase(TestCase):
         user.delete()
         with self.assertRaises(Request.DoesNotExist):
             Request.objects.get(user = id)
+        
+    def test_is_not_approved_without_lesson(self):
+        self.assertFalse(self.request.is_approved)

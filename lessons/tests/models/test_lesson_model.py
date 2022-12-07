@@ -9,14 +9,16 @@ class LessonModelTestCase(TestCase):
 
     fixtures = [
         "lessons/tests/fixtures/default_user.json",
-        "lessons/tests/fixtures/default_request.json",
-        "lessons/tests/fixtures/default_lesson.json"
+        "lessons/tests/fixtures/default_request.json"
     ]
 
     def setUp(self):
         self.user = User.objects.get(username="@johndoe")
         self.request = Request.objects.get(user = self.user)
-        self.lesson = Lesson.objects.get(request = self.request)
+        self.lesson = Lesson.objects.create(
+            request = self.request,
+            teacher = "Mr Keppens"
+        )
 
     def _assert_lesson_is_valid(self):
         try:
@@ -47,7 +49,8 @@ class LessonModelTestCase(TestCase):
         before = Request.objects.count()
         self.lesson.delete()
         after = Request.objects.count()
-        self.assertEqual(before, after)
+        self.assertEqual(before, after) ######## edit this to include false check for approved
+        self.assertFalse(self.request.is_approved)
 
     # if a request is deleted, the lesson is deleted
     def test_deleted_request_deletes_lesson(self):
@@ -58,7 +61,7 @@ class LessonModelTestCase(TestCase):
 
     # when a lesson is made, the request field "is_approved" should be set to True
     def test_request_is_approved_when_lesson_is_made(self):
-        pass
+        self.assertTrue(self.request.is_approved)
 
     # calculateCost should return the correct value
     def test_calculateCost_calculates_correct_value(self):
@@ -76,3 +79,9 @@ class LessonModelTestCase(TestCase):
                 )
         after = Lesson.objects.count()
         self.assertEqual(before, after)
+    
+    # test that request is approved with lesson, then delete lesson, then request is not approved
+    def test_request_is_not_approved_when_lesson_deleted(self):
+        self.assertTrue(self.request.is_approved)
+        self.lesson.delete()
+        self.assertFalse(self.request.is_approved)

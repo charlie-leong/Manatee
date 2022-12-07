@@ -36,6 +36,14 @@ class Request(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default= False)
 
+    def set_approved_to_false(self):
+        self.is_approved = False
+        self.save()
+
+    def set_approved_to_true(self):
+        self.is_approved = True
+        self.save()
+
 class Lesson(models.Model):
     request = models.OneToOneField(Request, on_delete=models.CASCADE, primary_key=True)
     teacher = models.CharField(max_length = 30)
@@ -47,7 +55,14 @@ class Lesson(models.Model):
     
     def __str__(self):
         return f'This lesson is taught by {self.teacher}'
+    
+    def save(self, *args, **kwargs):
+        self.request.set_approved_to_true()
+        super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        self.request.set_approved_to_false()
+        super().delete(*args, **kwargs)
 
 class BankTransfer(models.Model):
     user_ID=models.CharField(max_length=4)
