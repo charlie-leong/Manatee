@@ -1,18 +1,26 @@
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 # Create your models here.
-AVAILABILITY = (
-    ('monday','MONDAY'),
-    ('tuesday', 'TUESDAY'),
-    ('wednesday','WEDNESDAY'),
-    ('thursday','THURSDAY'),
-    ('friday','FRIDAY'),
-)
-
-DURATIONS = ((30, 30), (45, 45), (60, 60))
-NUM_LESSONS = ((1, 1), (2, 2), (3, 3), (4, 4))      # assuming that a request will request 4 lessons at most
+AVAILABILITY = [
+    ('MONDAY','Monday'),
+    ('TUESDAY', 'Tuesday'),
+    ('WEDNESDAY','Wednesday'),
+    ('THURSDAY','Thursday'),
+    ('FRIDAY','Friday'),
+]
+NUM_LESSONS = [
+    (1, "1 lesson"), (2, "2 lessons"), (3, "3 lessons"), (4, "4 lessons")
+]
+LESSON_INTERVAL = [
+    (1, "Every week"),
+    (2, "Every 2 weeks")
+]
+DURATIONS = [
+    (30, "30 minutes"), (45, "45 minutes"), (60, "1 hour")
+]
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
@@ -28,9 +36,9 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, blank=False)
 
 class Request(models.Model):
-    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
+    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
+    interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, default=1)
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
     extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -47,6 +55,8 @@ class Request(models.Model):
 class Lesson(models.Model):
     request = models.OneToOneField(Request, on_delete=models.CASCADE, primary_key=True)
     teacher = models.CharField(max_length = 30)
+    startDate = models.DateField(default=timezone.now)
+    startTime = models.TimeField(default=timezone.now)
     paid = models.BooleanField(default=False)
 
     def calculateCost(self):
