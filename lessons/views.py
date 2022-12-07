@@ -17,7 +17,7 @@ def dashboard(request):
     pendingReqs = Request.objects.filter(created_by = request.user, is_approved = False)
     # unpaidReqs = Lesson.objects.filter(assigned_student_id = request.user)
     # paidReqs = Lesson.objects.filter(assigned_student_id = request.user)
-    return render(request, "dashboard.html", {"pending": pendingReqs})
+    return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": [], "paid": []})
 
 def deleteRequest(httpReq, req_id):
     Request.objects.filter(created_by = httpReq.user, id = req_id).delete()

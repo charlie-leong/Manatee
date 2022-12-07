@@ -7,45 +7,36 @@ MSMS - Dashboard
 {% block content %}
 <div class="container">
   <h1>Dashboard</h1>
-  <span>Total {{pending.count}}</span>
-  <div>
-    {% for req in pending %}
-    <div class="card card-body mb-2">
-      <div class="mb-2">
-        <div>
-          <span>Specified availability:</span>
-          <span>{{req.availability.capitalize}}</span>
-        </div>
-        <div>
-          <span>Number of requested lessons:</span>
-          <span>{{req.number_of_lessons}}</span>
-        </div>
-        <div>
-          <span>Requested lesson duration:</span>
-          <span>{{req.duration}} minutes</span>
-        </div>
-        <div>
-          <span>Days between lessons:</span>
-          <span>{{req.interval}} days</span>
-        </div>
-        <div>
-          <span>Additional info:</span>
-          <span>{{req.extra_info}}</span>
-        </div>
-        <div>
-          <span>Booking status:</span>
-          <span>Not booked yet</span>
-        </div>
-      </div>
-      <div>
-        <a value="Edit" class="btn btn-secondary" href="{% url 'edit-request' req.id %}">Edit</a>
-        <input type="button" value="Delete" class="btn btn-danger" data-bs-toggle="modal"
-          data-bs-target="#deleteRequest-{{req.id}}">
-      </div>
-      {% include "partials/modal.html" with reqId=req.id %}
+  <p>You have {{pending.count}} requests in total</p>
+  <p>You can edit or delete pending requests. Unpaid and paid requests cannot be edited.</p>
+  <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom: 1.5rem;">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-tab-content"
+        type="button" role="tab" aria-controls="pending-tab" aria-selected="true">Pending</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="unpaid-tab" data-bs-toggle="tab" data-bs-target="#unpaid-tab-content" type="button"
+        role="tab" aria-controls="unpaid" aria-selected="false">Unpaid</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid-tab-content" type="button"
+        role="tab" aria-controls="paid" aria-selected="false">Paid</button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="pending-tab-content" role="tabpanel" aria-labelledby="pending-tab" tabindex="0">
+      {% include "partials/requests-list.html" with requests=pending reqsType="pending" %}
     </div>
-    {% endfor %}
+    <div class="tab-pane" id="unpaid-tab-content" role="tabpanel" aria-labelledby="unpaid-tab" tabindex="0">
+      {% include "partials/requests-list.html" with requests=unpaid reqsType="unpaid" %}
+    </div>
+    <div class="tab-pane" id="paid-tab-content" role="tabpanel" aria-labelledby="paid-tab" tabindex="0">
+      {% include "partials/requests-list.html" with requests=paid reqsType="paid" %}
+    </div>
   </div>
+
+
 
 </div>
 

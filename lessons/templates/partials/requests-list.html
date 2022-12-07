@@ -1,0 +1,38 @@
+{% for req in requests %}
+<div class="card card-body mb-2">
+    <ul class="list-group list-group-flush mb-2">
+        <li class="list-group-item">
+            <span>Specified availability:</span>
+            <span>{{req.availability.capitalize}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Number of requested lessons:</span>
+            <span>{{req.number_of_lessons}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Requested lesson duration:</span>
+            <span>{{req.duration}} minutes</span>
+        </li>
+        <li class="list-group-item">
+            <span>Days between lessons:</span>
+            <span>{{req.interval}} days</span>
+        </li>
+        <li class="list-group-item">
+            <span>Additional info:</span>
+            <span>{{req.extra_info}}</span>
+        </li>
+    </ul>
+    {% if reqsType == "pending" %}
+    <div>
+        <a class="btn btn-secondary" href="{% url 'edit-request' req.id %}">Edit</a>
+        <input type="button" value="Delete" class="btn btn-danger" data-bs-toggle="modal"
+            data-bs-target="#deleteRequest-{{req.id}}">
+    </div>
+    {% include "partials/modal.html" with reqId=req.id %}
+    {% elif reqsType == "unpaid" %}
+    <div>
+        <a class="btn btn-primary" href="{% url 'bank-transfer' %}">Pay now</a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
