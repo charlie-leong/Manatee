@@ -4,16 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 # Create your models here.
-AVAILABILITY = (
-    ('monday','MONDAY'),
-    ('tuesday', 'TUESDAY'),
-    ('wednesday','WEDNESDAY'),
-    ('thursday','THURSDAY'),
-    ('friday','FRIDAY'),
-)
-
-DURATIONS = ((30, 30), (45, 45), (60, 60))
-NUM_LESSONS = ((1, 1), (2, 2), (3, 3), (4, 4))      # assuming that a request will request 4 lessons at most
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
@@ -29,15 +19,29 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, blank=False)
 
 class Request(models.Model):
-    WEEKLY = 1
-    FORTNIGHTLY = 2
-    LESSON_INTERVAL = [
-        (WEEKLY, "Every week"),
-        (FORTNIGHTLY, "Every 2 weeks")
-    ]
-    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
+    AVAILABILITY = (
+        ('MONDAY','Monday'),
+        ('TUESDAY', 'Tuesday'),
+        ('WEDNESDAY','Wednesday'),
+        ('THURSDAY','Thursday'),
+        ('FRIDAY','Friday'),
+    )
+    availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
+
+    NUM_LESSONS = (
+        (1, "1 lesson"), (2, "2 lessons"), (3, "3 lessons"), (4, "4 lessons")
+    )
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, default=WEEKLY)
+
+    LESSON_INTERVAL = [
+        (1, "Every week"),
+        (2, "Every 2 weeks")
+    ]
+    interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, default=1)
+
+    DURATIONS = (
+        (30, "30 minutes"), (45, "45 minutes"), (60, "1 hour")
+    )
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
     extra_info =models.CharField(max_length=100, verbose_name="Extra information", blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
