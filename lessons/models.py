@@ -11,7 +11,7 @@ AVAILABILITY = (
     ('friday','Friday'),
 )
 DURATIONS = ((30, 30), (45, 45), (60, 60))
-NUM_LESSONS = ((1, 1), (2, 2), (3, 3), (4, 4))      # assuming that a request will request 4 lessons at most
+NUM_LESSONS = ((1, 1), (2, 2), (3, 3), (4, 4))
 INTERVALS = ((x, x) for x in range(2, 15))
 
 
@@ -30,8 +30,8 @@ class User(AbstractUser):
     
 class Request(models.Model):
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='monday')
-    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
-    interval = models.PositiveIntegerField(validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])  # whats the minimum? whats the maximum?
+    number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1, validators=[MinValueValidator(1), MaxValueValidator(4)])
+    interval = models.PositiveIntegerField(choices= INTERVALS, verbose_name="Interval (days)", default= 7, validators=[MinValueValidator(2, "Cannot request lessons for a period shorter than 2 days."), MaxValueValidator(14, "Cannot request lessons for a period longer than 14 days.")])
     duration=models.PositiveIntegerField(choices= DURATIONS, verbose_name="Duration (mins)", default= 30)
     extra_info =models.CharField(max_length=750, verbose_name="Extra information", blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
