@@ -1,43 +1,52 @@
 {% extends "base_content.html" %}
-
+{% load static %}
 {% block title %}
 MSMS - Dashboard
 {% endblock %}
 
 {% block content %}
 <div class="container">
-  {% for req in pending %}
+  <h1>Dashboard</h1>
+  <span>Total {{pending.count}}</span>
   <div>
-    <div>
-      <span>Specified availability:</span>
-      <span>{{req.availability.capitalize}}</span>
+    {% for req in pending %}
+    <div class="card card-body mb-2">
+      <div class="mb-2">
+        <div>
+          <span>Specified availability:</span>
+          <span>{{req.availability.capitalize}}</span>
+        </div>
+        <div>
+          <span>Number of requested lessons:</span>
+          <span>{{req.number_of_lessons}}</span>
+        </div>
+        <div>
+          <span>Requested lesson duration:</span>
+          <span>{{req.duration}} minutes</span>
+        </div>
+        <div>
+          <span>Days between lessons:</span>
+          <span>{{req.interval}} days</span>
+        </div>
+        <div>
+          <span>Additional info:</span>
+          <span>{{req.extra_info}}</span>
+        </div>
+        <div>
+          <span>Booking status:</span>
+          <span>Not booked yet</span>
+        </div>
+      </div>
+      <div>
+        <a value="Edit" class="btn btn-secondary" href="{% url 'edit-request' req.id %}">Edit</a>
+        <input type="button" value="Delete" class="btn btn-danger" data-bs-toggle="modal"
+          data-bs-target="#deleteRequest-{{req.id}}">
+      </div>
+      {% include "partials/modal.html" with reqId=req.id %}
     </div>
-    <div>
-      <span>Number of requested lessons:</span>
-      <span>{{req.number_of_lessons}}</span>
-    </div>
-    <div>
-      <span>Requested lesson duration:</span>
-      <span>{{req.duration}} minutes</span>
-    </div>
-    <div>
-      <span>Days between lessons:</span>
-      <span>{{req.interval}} days</span>
-    </div>
-    <div>
-      <span>Additional info:</span>
-      <span>{{req.extra_info}} TEST MAX LENGTH FOR LINE BREAK</span>
-    </div>
-    <div>
-      <span>Booking status:</span>
-      <span>{{req.is_approved}}</span>
-    </div>
+    {% endfor %}
   </div>
-  <div>
-    <input type="submit" value="Edit" class="btn btn-secondary">
-    <input type="button" value="Delete" class="btn btn-danger">
-  </div>
-  {% endfor %}
+
 </div>
 
 {% endblock %}

@@ -9,15 +9,32 @@ from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
+from .utils import updateReqEntry
 def home(request):
     return render(request, 'home.html')
 
 def dashboard(request):
     pendingReqs = Request.objects.filter(created_by = request.user, is_approved = False)
-    unpaidReqs = Lesson.objects.filter(assigned_student_id = request.user)
-    paidReqs = Lesson.objects.filter(assigned_student_id = request.user)
-    return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": unpaidReqs, "paid": paidReqs})
+    # unpaidReqs = Lesson.objects.filter(assigned_student_id = request.user)
+    # paidReqs = Lesson.objects.filter(assigned_student_id = request.user)
+    return render(request, "dashboard.html", {"pending": pendingReqs})
+
+def deleteRequest(httpReq, req_id):
+    Request.objects.filter(created_by = httpReq.user, id = req_id).delete()
+    # return 403 forbidden
+    return redirect('dashboard')
+
+def editRequest(httpReq, req_id):
+    reqToBeUpdated = Request.objects.get(created_by = httpReq.user, id = req_id)
+    if httpReq.method == 'POST':
+        form = RequestForm(httpReq.POST)
+        if form.is_valid():
+            updateReqEntry(reqToBeUpdated, form.cleaned_data)
+            return redirect('dashboard')
+        messages.add_message(httpReq, messages.ERROR, "Invalid form input")
+    
+    editForm = RequestForm(instance= reqToBeUpdated)
+    return render(httpReq, 'edit-request.html', {'requestId': req_id,'form': editForm})
 
 def log_in(request):
     if request.method == 'POST':
@@ -53,8 +70,8 @@ def request_lessons(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
         if form.is_valid():
-            lessonReq = form.save(request.user)
-            return HttpResponseRedirect(reverse('dashboard'))
+            form.save(request.user)
+            return redirect('dashboard')
         # invalid form input
         messages.add_message(request, messages.ERROR, "Invalid form input")
         
