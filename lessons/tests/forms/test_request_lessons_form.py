@@ -53,6 +53,4 @@ class RequestFormTestCase(TestCase):
         self.assertEqual(request.number_of_lessons, 2)
         self.assertEqual(request.interval, 7)
         self.assertEqual(request.duration, 60)
-        self.assertEqual(request.created_by.id, user.id)
-        
-        
+        self.assertEqual(request.user.id, user.id)

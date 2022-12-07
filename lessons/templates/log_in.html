@@ -6,21 +6,22 @@ MSMS - Log In
 
 {% block content %}
 <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <h1>Log in</h1>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h1 class="mb-4">Log in</h1>
 
-        {% for message in messages %}
-            <p> <b> {{ message }}</b> </p>
-        {% endfor %}
+      {% for message in messages %}
+      <p> <b> {{ message }}</b> </p>
+      {% endfor %}
 
-        <form action="{% url 'log_in'%}" method='post'>
-            {% csrf_token %}
-            {% include "partials/bootstrap_form.html" with form=form %}
-            <input type='submit' value='Log in' class="btn btn-primary">
-        </form>
-      </div>
+      <form action="{% url 'log_in'%}" method='post'>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include "partials/bootstrap_form.html" with form=form %}
+        <input type='submit' value='Log in' class="btn btn-primary">
+      </form>
     </div>
+  </div>
 </div>
 
 {% endblock %}

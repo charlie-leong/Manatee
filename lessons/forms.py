@@ -16,12 +16,12 @@ class RequestForm(forms.ModelForm):
             interval = self.cleaned_data.get("interval"),
             duration = self.cleaned_data.get("duration"),
             extra_info = self.cleaned_data.get("extra_info"),
-            created_by = user
+            user = user
         )
         return request
 
 
-class LogInForm(forms.Form): #not associated wiht a particualr user model
+class LogInForm(forms.Form): #not associated with a particular user model
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
 
@@ -30,7 +30,7 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email']
     new_password = forms.CharField(
-        label='password',
+        label='Password',
         widget=forms.PasswordInput(),
         validators = [RegexValidator(
             regex= r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',  #?= checks if something is coming up ahead
@@ -38,7 +38,7 @@ class SignUpForm(forms.ModelForm):
 
         )]
     )
-    password_confirmation = forms.CharField(label='password confirmation', widget=forms.PasswordInput())
+    password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
     # override clean function to check that password and conf are the same
     def clean(self):

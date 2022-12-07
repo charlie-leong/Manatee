@@ -1,0 +1,17 @@
+{%extends 'base_content.html'%}
+{%load static%}
+
+{% block title %}All transfers{% endblock %}
+
+
+{%block jumbotron%}
+All transfers{%endblock%}
+
+
+{% block content %}
+    {%for transfer in allTransfers%}
+      {{transfer.invoice_number}}
+      <p>---------</p>
+    {% endfor %}
+
+{% endblock %}
