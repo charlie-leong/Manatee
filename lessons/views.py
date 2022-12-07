@@ -16,18 +16,18 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    pendingReqs = Request.objects.filter(created_by = request.user, is_approved = False)
+    pendingReqs = Request.objects.filter(user = request.user, is_approved = False)
     # unpaidReqs = Lesson.objects.filter(assigned_student_id = request.user)
     # paidReqs = Lesson.objects.filter(assigned_student_id = request.user)
     return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": [], "paid": []})
 
 def deleteRequest(httpReq, req_id):
-    Request.objects.filter(created_by = httpReq.user, id = req_id).delete()
+    Request.objects.filter(user = httpReq.user, id = req_id).delete()
     # return 403 forbidden
     return redirect('dashboard')
 
 def editRequest(httpReq, req_id):
-    reqToBeUpdated = Request.objects.get(created_by = httpReq.user, id = req_id)
+    reqToBeUpdated = Request.objects.get(user = httpReq.user, id = req_id)
     if httpReq.method == 'POST':
         form = RequestForm(httpReq.POST)
         if form.is_valid():
