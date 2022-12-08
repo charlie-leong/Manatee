@@ -72,7 +72,7 @@ class SignUpForm(forms.ModelForm):
 class BankTransferForm(forms.ModelForm):
     class Meta:
         model = BankTransfer
-        fields=['invoice_number', 'pay', 'paid']
+        fields=['invoice_number']
     def clean(self):
         pass
 

@@ -75,10 +75,8 @@ class Lesson(models.Model):
         super().delete(*args, **kwargs)
 
 class BankTransfer(models.Model):
-    user_ID=models.CharField(max_length=4)
+    user_ID = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     invoice_number=models.CharField(max_length=3)
     full_invoice_number = models.CharField(max_length=8)
-    pay = models.PositiveIntegerField()
-    paid = models.BooleanField()
-
-    balance = 0
+    cost = models.PositiveIntegerField()
