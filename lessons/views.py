@@ -7,17 +7,39 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render 
 from django.urls import reverse
-
 from .forms import BankTransferForm, LogInForm, RequestForm, SignUpForm
 from .helpers import login_prohibited
-from .models import BankTransfer, Request
+from .models import BankTransfer, Request, Lesson
+from .utils import updateReqEntry
 
 def home(request):
     return render(request, 'home.html')
 
 @login_required
 def dashboard(request):
-    return render(request, "dashboard.html")
+    pendingReqs = Request.objects.filter(user = request.user, is_approved = False)
+    approvedReqs = Request.objects.filter(user = request.user, is_approved = True)
+    unpaidReqs = Lesson.objects.filter(request__in = approvedReqs, paid = False)
+    paidReqs = Lesson.objects.filter(request__in = approvedReqs, paid = True)
+              
+    return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": unpaidReqs, "paid": paidReqs})
+
+def deleteRequest(httpReq, req_id):
+    Request.objects.filter(user = httpReq.user, id = req_id).delete()
+    # return 403 forbidden
+    return redirect('dashboard')
+
+def editRequest(httpReq, req_id):
+    reqToBeUpdated = Request.objects.get(user = httpReq.user, id = req_id)
+    if httpReq.method == 'POST':
+        form = RequestForm(httpReq.POST)
+        if form.is_valid():
+            updateReqEntry(reqToBeUpdated, form.cleaned_data)
+            return redirect('dashboard')
+        messages.add_message(httpReq, messages.ERROR, "Invalid form input")
+    
+    editForm = RequestForm(instance= reqToBeUpdated)
+    return render(httpReq, 'edit-request.html', {'requestId': req_id,'form': editForm})
 
 @login_prohibited
 def log_in(request):
@@ -59,7 +81,7 @@ def request_lessons(request):
         form = RequestForm(request.POST)
         if form.is_valid():
             form.save(request.user)
-            return HttpResponseRedirect(reverse('request-display'))
+            return redirect('dashboard')
         # invalid form input
         messages.add_message(request, messages.ERROR, "Invalid form input")
     form = RequestForm(request.POST or None)
