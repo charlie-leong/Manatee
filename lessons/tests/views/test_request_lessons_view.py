@@ -40,7 +40,7 @@ class RequestViewTestCase(TestCase, LogInTester):
         
     # A lesson request can only be made by a logged in user
     def test_successful_lesson_request_from_logged_in_user(self):
-        logIn = self.client.post(reverse("log_in"), {"username": self.user.username, "password": "Password123"}, follow= True)
+        logIn = self.client.post(reverse("log_in"), {"email": self.user.email, "password": "Password123"}, follow= True)
         before = Request.objects.count()
         response = self.client.post(self.url, self.formInput, follow= True)
         self.assertEqual(response.status_code, 200)
