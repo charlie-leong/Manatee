@@ -25,8 +25,13 @@ class approvedRequest(Request):
 class pendingRequestAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return Request.objects.filter(is_approved = False)
+    
+    @admin.display(description="Request info")
+    def request_info(self, obj):
+        return f'request-{obj.id}'
+
     list_display = [
-       "id", "user", "availability", "number_of_lessons", "interval", "duration", "is_approved"
+       "request_info", "user", "is_approved"
     ]
     readonly_fields = ["is_approved"]
     inlines = [LessonInline]
@@ -35,8 +40,13 @@ class pendingRequestAdmin(admin.ModelAdmin):
 class approvedRequestAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return Request.objects.filter(is_approved = True)
+    
+    @admin.display(description="Request info")
+    def request_info(self, obj):
+        return f'request-{obj.id}'
+
     list_display = [
-       "id", "user", "availability", "number_of_lessons", "interval", "duration", "is_approved"
+       "request_info", "user", "is_approved"
     ]
     readonly_fields = ["is_approved"]
     inlines = [LessonInline]
@@ -49,4 +59,5 @@ class BankTransferAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ["request", "teacher", "paid"]
+
+    list_display = ["request", "teacher", "startDate", "paid"]
