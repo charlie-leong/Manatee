@@ -35,6 +35,9 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
 
+    def __str__(self):
+        return self.username
+
 class Request(models.Model):
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
@@ -51,6 +54,9 @@ class Request(models.Model):
     def set_approved_to_true(self):
         self.is_approved = True
         self.save()
+    
+    def __str__(self):
+        return f'Request-{self.id} by {self.user}'
 
 class Lesson(models.Model):
     request = models.OneToOneField(Request, on_delete=models.CASCADE, primary_key=True)
