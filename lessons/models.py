@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
 AVAILABILITY = (
@@ -26,16 +27,20 @@ class Request(models.Model):
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
-    username = models.CharField(
-        max_length=30,
-        unique=True,
-        validators = [RegexValidator(
-            regex= r'^@\w{3,}$',
-            message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
-        )])
+    # username = models.CharField(
+    #     max_length=30,
+    #     unique=True,
+    #     validators = [RegexValidator(
+    #         regex= r'^@\w{3,}$',
+    #         message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
+    #     )])
+    username = None
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
+    email = models.EmailField(unique=True, blank=False)  # check if need to edit
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    objects = UserManager()
    
 class BankTransfer(models.Model):
     user_ID=models.CharField(max_length=4)
@@ -63,4 +68,45 @@ class Lesson(models.Model):
     def calculateCost():
         baseCost = 20
         return baseCost * duration/60 * number_of_lessons
+
+
+# basically defining model manager for no username 
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password, first_name, last_name):  # check if add id field
+        """Create and save a User with the given email and password."""
+        if not email:
+            raise ValueError('email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, first_name=first_name, last_name=last_name)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        """Create and save a regular User with the given email and password."""
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        """Create and save a SuperUser with the given email and password."""
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(email, password, **extra_fields)
+
+
+class User(AbstractUser):
+    """User model."""
+
+    ## Here goes the model definition from before. ##
+
+    objects = UserManager() ## This is the new line in the User model. ##
 
