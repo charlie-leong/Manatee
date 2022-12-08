@@ -9,9 +9,30 @@ All transfers{%endblock%}
 
 
 {% block content %}
-    {%for transfer in allTransfers%}
-      {{transfer.invoice_number}}
-      <p>---------</p>
+  <div class="row">
+
+    <div class="row">
+      <div class="col-sm-1" style="background-color:lavenderblush;">Invoice number</div>
+      <div class="col-sm-1" style="background-color:lavenderblush;">Payment</div>
+      <div class="col-sm-1" style="background-color:lavenderblush;">Paid ?</div>
+    </div>
+    {% for transfer in allTransfers %}
+    <div class="row">
+      <div class="col-sm-1" >#{{transfer.invoice_number}}</div>
+      <div class="col-sm-1" >£{{transfer.pay}}</div>
+      <div class="col-sm-1" >{{transfer.paid}}</div>
+    </div>
+        <!-- if last column in row -->
+        {% if forloop.counter|divisibleby:"10" and not forloop.last %}
+        </div><div class="row">
+        {% endif %}
+
     {% endfor %}
 
+  </div>
+
+
 {% endblock %}
+
+
+
