@@ -1,6 +1,7 @@
 {% for req in requests %}
 <div class="card card-body mb-2">
     <ul class="list-group list-group-flush mb-2">
+        {% if reqsType == "pending" %}
         <li class="list-group-item">
             <span>Specified availability:</span>
             <span>{{req.availability.capitalize}}</span>
@@ -21,6 +22,40 @@
             <span>Additional info:</span>
             <span>{{req.extra_info}}</span>
         </li>
+        {% elif reqsType != "pending" %}
+        <li class="list-group-item">
+            <span>Specified availability:</span>
+            <span>{{req.request.availability.capitalize}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Number of requested lessons:</span>
+            <span>{{req.request.number_of_lessons}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Requested lesson duration:</span>
+            <span>{{req.request.duration}} minutes</span>
+        </li>
+        <li class="list-group-item">
+            <span>Days between lessons:</span>
+            <span>{{req.request.interval}} days</span>
+        </li>
+        <li class="list-group-item">
+            <span>Additional info:</span>
+            <span>{{req.request.extra_info}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Teacher:</span>
+            <span>{{req.teacher}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Start date:</span>
+            <span>{{req.startDate}}</span>
+        </li>
+        <li class="list-group-item">
+            <span>Start time:</span>
+            <span>{{req.startTime}}</span>
+        </li>
+        {% endif %}
     </ul>
     {% if reqsType == "pending" %}
     <div>

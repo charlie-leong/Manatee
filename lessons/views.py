@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from .forms import BankTransferForm, LogInForm, RequestForm, SignUpForm
 from .helpers import login_prohibited
-from .models import BankTransfer, Request
+from .models import BankTransfer, Request, Lesson
 from .utils import updateReqEntry
 
 def home(request):
@@ -18,9 +18,11 @@ def home(request):
 @login_required
 def dashboard(request):
     pendingReqs = Request.objects.filter(user = request.user, is_approved = False)
-    # unpaidReqs = Lesson.objects.filter(assigned_student_id = request.user)
-    # paidReqs = Lesson.objects.filter(assigned_student_id = request.user)
-    return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": [], "paid": []})
+    approvedReqs = Request.objects.filter(user = request.user, is_approved = True)
+    unpaidReqs = Lesson.objects.filter(request__in = approvedReqs, paid = False)
+    paidReqs = Lesson.objects.filter(request__in = approvedReqs, paid = True)
+              
+    return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": unpaidReqs, "paid": paidReqs})
 
 def deleteRequest(httpReq, req_id):
     Request.objects.filter(user = httpReq.user, id = req_id).delete()
