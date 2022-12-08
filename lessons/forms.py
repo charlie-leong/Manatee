@@ -1,6 +1,8 @@
 from django.core.validators import RegexValidator
 from django import forms
 from .models import *
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 
 class RequestForm(forms.ModelForm):
     class Meta:
@@ -76,3 +78,16 @@ class BankTransferForm(forms.ModelForm):
     def clean(self):
         pass
 
+
+
+class CustomUserCreationForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')

@@ -1,9 +1,14 @@
 from django.contrib import admin
 from .models import *
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+
 # Register your models here.
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
+    model = User
     list_display = [
         "first_name", "last_name", "email", "is_staff", "is_superuser"
     ]
@@ -20,3 +25,5 @@ class BankTransferAdmin(admin.ModelAdmin):
         "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
     ]
 
+
+admin.site.register(User, UserAdmin)
