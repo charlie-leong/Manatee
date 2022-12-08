@@ -48,9 +48,9 @@ class RequestViewTestCase(TestCase, LogInTester):
         self.assertEqual(after, before + 1)
         createdLessonRequest = Request.objects.get(user = logIn.context["user"].id)
         self.assertEqual(createdLessonRequest.user.username, logIn.context["user"].username)
-        response_url = reverse('request-display')
+        response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'request-display.html')
+        self.assertTemplateUsed(response, 'dashboard.html')
         response_messages = list(response.context['messages'])
         self.assertEqual(len(response_messages), 0)
     

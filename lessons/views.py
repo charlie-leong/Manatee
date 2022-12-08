@@ -101,11 +101,6 @@ def request_lessons(request):
     return render(request, 'request-lessons.html', {'form': form})
 
 @login_required
-def request_display(request):
-    all_requests = Request.objects.all()
-    return render (request, 'request-display.html', {'allRequests':all_requests})
-
-@login_required
 def log_out(request):
     logout(request)
     return redirect("home")
