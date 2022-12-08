@@ -1,3 +1,6 @@
+"""
+Helper classes and methods that test cases can utilise.
+"""
 from django.urls import reverse
 
 class LogInTester:

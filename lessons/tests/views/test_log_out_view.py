@@ -1,8 +1,11 @@
+"""
+Test cases for log out view.
+"""
 from django.test import TestCase
 from django.urls import reverse
+
 from lessons.models import User
 from lessons.tests.helpers import LogInTester
-
 
 class LogOutViewTestCase(TestCase, LogInTester):
 

@@ -1,7 +1,11 @@
+"""
+Test cases for the dashboard view.
+"""
 from django.test import TestCase
 from django.urls import reverse
-from lessons.tests.helpers import reverse_with_next, LogInTester
+
 from lessons.models import User
+from lessons.tests.helpers import LogInTester, reverse_with_next
 
 class DashboardViewTestCase(TestCase, LogInTester):
 
