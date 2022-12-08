@@ -1,8 +1,12 @@
-from django.test import TestCase
-from lessons.forms import SignUpForm
-from django.urls import reverse
-from lessons.models import User
+"""
+Test cases for the sign up view.
+"""
 from django.contrib.auth.hashers import check_password
+from django.test import TestCase
+from django.urls import reverse
+
+from lessons.forms import SignUpForm
+from lessons.models import User
 from lessons.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):

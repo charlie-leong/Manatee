@@ -1,6 +1,9 @@
-from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
-from django.db import models
+"""
+All models for the lessons application.
+"""
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
+from django.db import models
 from django.utils import timezone
 
 # Create your models here.
@@ -35,7 +38,15 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
 
+    def __str__(self):
+        return self.username
+
 class Request(models.Model):
+    """
+    Request model used to keep track of student's requests for lessons. A
+    lesson is initially not approved, but once it has a Lesson object related
+    to it, it will automatically become approved.
+    """
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1)
     interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, default=1)
@@ -44,15 +55,26 @@ class Request(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default= False)
 
+    # used by lesson object to change value of field
     def set_approved_to_false(self):
         self.is_approved = False
         self.save()
 
+    # used by lesson object to change value of field
     def set_approved_to_true(self):
         self.is_approved = True
         self.save()
+    
+    def __str__(self):
+        return f'Request-{self.id} by {self.user}'
 
 class Lesson(models.Model):
+    """
+    Lesson model that must be related to one and only one request object. Once
+    related, it stores the desired teacher for the lesson, the start date and
+    time, and whether the lesson has been paid for. This should automatically
+    update if a BankTransfer object is related to it.
+    """
     request = models.OneToOneField(Request, on_delete=models.CASCADE, primary_key=True)
     teacher = models.CharField(max_length = 30)
     startDate = models.DateField(default=timezone.now)
@@ -60,6 +82,7 @@ class Lesson(models.Model):
     paid = models.BooleanField(default=False)
 
     def calculateCost(self):
+        """ Calculate the cost of the lesson. """
         baseCost = 20
         return baseCost * self.request.duration/60 * self.request.number_of_lessons
     

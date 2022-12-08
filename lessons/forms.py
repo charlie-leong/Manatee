@@ -1,18 +1,17 @@
-from django.core.validators import RegexValidator
+"""
+All of the forms of the lesson application.
+"""
 from django import forms
-from .models import *
+from django.core.validators import RegexValidator
+
+from lessons.models import BankTransfer, Lesson, Request, User
 
 class RequestForm(forms.ModelForm):
+    """ Form that will let users create a Request object. """
     class Meta:
         model = Request
         fields=['availability', 'number_of_lessons', 'duration', 'interval', 'extra_info']
         widgets = {'extra_info': forms.Textarea()}
-
-    # interval = forms.IntegerField(
-    #     min_value=2,
-    #     max_value=14,
-    #     error_messages={"min_value": "Cannot request lessons for a period shorter than 2 days.", "max_value": "Cannot request lessons for a period longer than 14 days."}
-    #     )
         
     def clean(self):
         pass
@@ -35,6 +34,7 @@ class LogInForm(forms.Form): #not associated with a particular user model
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
 
 class SignUpForm(forms.ModelForm):
+    """ Form that users will use to sign up. """
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email']
