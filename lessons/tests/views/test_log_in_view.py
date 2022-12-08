@@ -1,9 +1,14 @@
+"""
+Test cases for log in view.
+"""
+from django.contrib import messages
 from django.test import TestCase
 from django.urls import reverse
+
 from lessons.forms import LogInForm
 from lessons.models import User
 from lessons.tests.helpers import LogInTester, reverse_with_next
-from django.contrib import messages
+
 
 class LogInViewTestCase(TestCase, LogInTester):
 

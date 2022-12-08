@@ -1,9 +1,14 @@
+"""
+Admin view for the application.
+"""
 from django.contrib import admin
-from .models import *
+
+from lessons.models import BankTransfer, Lesson, Request, User
 # Register your models here.
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
+    """ Admin view for the User model. """
     list_display = [
         "username", "first_name", "last_name", "email", "is_staff", "is_superuser"
     ]
@@ -23,6 +28,7 @@ class approvedRequest(Request):
 
 @admin.register(pendingRequest)
 class pendingRequestAdmin(admin.ModelAdmin):
+    """ Admin view for requests that have not been approved yet. """
     def get_queryset(self, request):
         return Request.objects.filter(is_approved = False)
     
@@ -38,6 +44,7 @@ class pendingRequestAdmin(admin.ModelAdmin):
         
 @admin.register(approvedRequest)
 class approvedRequestAdmin(admin.ModelAdmin):
+    """ Admin view for requests that have been approved. """
     def get_queryset(self, request):
         return Request.objects.filter(is_approved = True)
     
@@ -47,17 +54,19 @@ class approvedRequestAdmin(admin.ModelAdmin):
 
     list_display = [
        "request_info", "user", "is_approved"
+
     ]
     readonly_fields = ["is_approved"]
     inlines = [LessonInline]
 
 @admin.register(BankTransfer)
 class BankTransferAdmin(admin.ModelAdmin):
+    """ Admin view for bank transfers. """
     list_display = [
         "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
     ]
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-
+    """ Admin view for lessons. """
     list_display = ["request", "teacher", "startDate", "paid"]

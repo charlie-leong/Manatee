@@ -1,6 +1,10 @@
-from django.test import TestCase
-from lessons.forms import LogInForm
+"""
+Test cases for the Log in form.
+"""
 from django import forms
+from django.test import TestCase
+
+from lessons.forms import LogInForm
 
 class LogInFormTestCase(TestCase):
 
@@ -12,6 +16,7 @@ class LogInFormTestCase(TestCase):
     
     # form has necessary fields
     def test_form_has_necessary_fields(self):
+        """ Form has necessary fields. """
         form = LogInForm()
         self.assertIn("username", form.fields)
         self.assertIn("password", form.fields)
@@ -20,29 +25,40 @@ class LogInFormTestCase(TestCase):
 
     # form accepts valid input
     def test_form_accepts_valid_input(self):
+        """ Form accepts valid input. """
         form = LogInForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
     # form does not accept blank username
     def test_no_blank_username(self):
+        """ Form doesn't accept blank username. """
         self.form_input["username"] = ""
         form = LogInForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
     # form does not accept blank password
     def test_no_blank_password(self):
+        """ Form doesn't accept blank password. """
         self.form_input["password"] = ""
         form = LogInForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
     # form accepts incorrect username
     def test_form_accepts_incorrect_username(self):
+        """ 
+        Form accepts incorrect username (i.e. does not make obvious what the
+        correct username format is.
+        """
         self.form_input["username"] = "bad_username"
         form = LogInForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
     # form accepts incorrect password
     def test_form_accepts_incorrect_password(self):
+        """
+        Form accepts incorrect password (i.e. does not make obvious what the
+        correct password format is.
+        """
         self.form_input["password"] = "nocaps123"
         form = LogInForm(data=self.form_input)
         self.assertTrue(form.is_valid())
