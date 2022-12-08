@@ -99,7 +99,6 @@ class Lesson(models.Model):
 
 class BankTransfer(models.Model):
     user_ID = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     invoice_number=models.CharField(max_length=3)
     full_invoice_number = models.CharField(max_length=8)
     cost = models.PositiveIntegerField()
