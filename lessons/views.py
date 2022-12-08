@@ -41,6 +41,17 @@ def editRequest(httpReq, req_id):
     editForm = RequestForm(instance= reqToBeUpdated)
     return render(httpReq, 'edit-request.html', {'requestId': req_id,'form': editForm})
 
+def bank_transfer(httpReq, req_id):
+    lessonToBePaid = Lesson.objects.get(id = req_id, user = httpReq.user)
+    if httpReq.method == 'POST':
+      form = BankTransferForm(httpReq.POST)
+      if form.is_valid():
+            form.save(httpReq.user, lessonToBePaid)
+            return HttpResponseRedirect(reverse('transfer-display'))
+
+    form = BankTransferForm(httpReq.POST or None)
+    return render(httpReq, 'bank-transfer.html',{ 'lessonId':req_id, 'form':form})
+
 @login_prohibited
 def log_in(request):
     if request.method == 'POST':
@@ -97,17 +108,7 @@ def log_out(request):
     logout(request)
     return redirect("home")
 
-@login_required
-def bank_transfer(request):
-    if request.method == 'POST':
-      form = BankTransferForm(request.POST)
-      #form.user_ID = user.id
-      if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('transfer-display'))
 
-    form = BankTransferForm(request.POST or None)
-    return render(request, 'bank-transfer.html',{'form':form})
 
 @login_required
 def transfer_display(request):

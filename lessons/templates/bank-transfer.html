@@ -10,10 +10,16 @@ Record Bank Transfer
 
 
 {% block content %}
-    <form action="{% url 'bank-transfer' %}" method="post">
-        {% csrf_token %} 
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
-        <input type="reset" value="Clear">
+<div class="container">
+    <div class="row">
+        <div div class="col-md-6 offset-md-3">
+            <div class="mb-4">
+                <h1>Bank Transfer</h1>
+                <p>Please enter the invoice number for this payment.</p>
+            </div>
+            {% include "partials/bankTransfer-form.html" with lesson= lessonId  %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

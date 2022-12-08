@@ -88,6 +88,14 @@ class Lesson(models.Model):
     
     def __str__(self):
         return f'This lesson is taught by {self.teacher}'
+
+    def set_paid_to_false(self):
+        self.paid = False
+        self.save()
+
+    def set_paid_to_true(self):
+        self.paid = True
+        self.save()
     
     def save(self, *args, **kwargs):
         self.request.set_approved_to_true()
@@ -98,7 +106,14 @@ class Lesson(models.Model):
         super().delete(*args, **kwargs)
 
 class BankTransfer(models.Model):
-    user_ID = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     invoice_number=models.CharField(max_length=3)
     full_invoice_number = models.CharField(max_length=8)
-    cost = models.PositiveIntegerField()
+    cost = models.PositiveIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.lesson.set_paid_to_true() 
+        super().save(*args, **kwargs)
+
+    
