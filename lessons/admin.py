@@ -54,6 +54,7 @@ class approvedRequestAdmin(admin.ModelAdmin):
 
     list_display = [
        "request_info", "user", "is_approved"
+
     ]
     readonly_fields = ["is_approved"]
     inlines = [LessonInline]
