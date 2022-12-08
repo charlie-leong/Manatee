@@ -44,7 +44,7 @@ class RequestModelTestCase(TestCase):
         self._assert_request_is_invalid()
     
     def test_less_than_min_interval(self):
-        self.request.interval = 1
+        self.request.interval = 0
         self._assert_request_is_invalid()
 
     def test_invalid_duration(self):

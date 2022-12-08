@@ -17,9 +17,9 @@ class RequestViewTestCase(TestCase, LogInTester):
         self.url = reverse("request-lessons")
         self.user = User.objects.get(username = "@johndoe")
         self.formInput = {
-            "availability": "wednesday",
+            "availability": "WEDNESDAY",
             "number_of_lessons": 2,
-            "interval": 7,
+            "interval": 2,
             "duration": 60,
             "extra_info": "I would like to learn the bababooey instrument."
         }

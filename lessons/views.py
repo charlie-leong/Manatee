@@ -1,15 +1,16 @@
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from .models import Request, Lesson
-from email import message
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+"""
+All views for the lessons application.
+"""
 from django.contrib import messages
-from .utils import updateReqEntry
-from .models import Request, BankTransfer
-from .forms import LogInForm, RequestForm, SignUpForm, BankTransferForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render 
+from django.urls import reverse
+from .forms import BankTransferForm, LogInForm, RequestForm, SignUpForm
 from .helpers import login_prohibited
+from .models import BankTransfer, Request
+from .utils import updateReqEntry
 
 def home(request):
     return render(request, 'home.html')
