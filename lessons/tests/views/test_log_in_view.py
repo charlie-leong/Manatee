@@ -53,7 +53,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test unsuccessful login
     def test_unsuccessful_log_in(self):
         form_input = {
-            "username" : self.user.username,
+            "email" : self.user.email,
             "password" : "Wrongpassword123"
         }
         response = self.client.post(self.url, form_input)
@@ -70,7 +70,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test successful login
     def test_succesful_log_in(self):
         form_input = {
-            'username': self.user.username, 
+            'email': self.user.email, 
             'password': 'Password123'
         }
         response = self.client.post(self.url, form_input, follow=True)
@@ -85,7 +85,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     def test_succesful_log_in_with_redirect(self):
         redirect_url = reverse("dashboard")
         form_input = {
-            'username': self.user.username, 
+            'email': self.user.email, 
             'password': 'Password123',
             "next_url" : redirect_url
         }
@@ -99,7 +99,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test correct redirect after successful login
     def test_correct_redirect_after_successful_login(self):
         form_input = {
-            "username" : self.user.username,
+            "email" : self.user.email,
             "password" : "Password123"
         }
         response = self.client.post(self.url, form_input, follow = True)
@@ -114,7 +114,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.user.is_active = False
         self.user.save()
         form_input = {
-            "username" : self.user.username,
+            "email" : self.user.email,
             "password" : "Password123"
         }
         response = self.client.post(self.url, form_input)
@@ -130,7 +130,7 @@ class LogInViewTestCase(TestCase, LogInTester):
 
     def test_post_log_in_with_incorrect_credentials_and_redirect(self):
         redirect_url = reverse('dashboard')
-        form_input = { 'username': '@johndoe', 'password': 'WrongPassword123', 'next': redirect_url }
+        form_input = { 'email': 'johndoe@example.org', 'password': 'WrongPassword123', 'next': redirect_url }
         response = self.client.post(self.url, form_input)
         next = response.context['next']
         self.assertEqual(next, redirect_url)
@@ -138,7 +138,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     # test get log in redirects to dashboard if user is already logged in
     def test_get_log_in_redirects_to_dashboard_if_user_is_logged_in(self):
         redirect_url = reverse("dashboard")
-        self.client.login(username = self.user.username, password = "Password123")
+        self.client.login(email = self.user.email, password = "Password123")
         response = self.client.get(self.url, follow = True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
         self.assertTemplateUsed(response, "dashboard.html")
@@ -147,10 +147,10 @@ class LogInViewTestCase(TestCase, LogInTester):
     def test_post_log_in_redirects_to_dashboard_if_user_is_logged_in(self):
         redirect_url = reverse("dashboard")
         form_input = {
-            "username" : self.user.username,
+            "email" : self.user.email,
             "password" : "WrongPassword123"
         }
-        self.client.login(username = self.user.username, password = "Password123")
+        self.client.login(email = self.user.email, password = "Password123")
         response = self.client.post(self.url, form_input, follow = True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
         self.assertTemplateUsed(response, "dashboard.html")
