@@ -1,0 +1,40 @@
+{% load widget_tweaks %}
+
+{% if action == "create" %}
+<form action="{% url 'request-lessons' %}" method="post">
+    {% csrf_token %}
+    {{form.non_field_errors}}
+    {% for field in form %}
+    <div class="mb-3">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {% if field.name == 'extra_info' %}
+        {% render_field field class="form-control" %}
+        {% else %}
+        {% render_field field class="form-select" %}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <input type="submit" value="Submit request" class="btn btn-primary">
+    <input type="reset" value="Clear" class="btn btn-secondary">
+</form>
+
+{% else %}
+<form action="{% url 'edit-request' reqId %}" method="post">
+    {% csrf_token %}
+    {{form.non_field_errors}}
+    {% for field in form %}
+    <div class="mb-3">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {% if field.name == 'extra_info' %}
+        {% render_field field class="form-control" %}
+        {% else %}
+        {% render_field field class="form-select" %}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <input type="submit" value="Edit request" class="btn btn-primary">
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">🡰 Cancel and return to dashboard</a>
+</form>
+{% endif %}

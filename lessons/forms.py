@@ -14,9 +14,6 @@ class RequestForm(forms.ModelForm):
         model = Request
         fields=['availability', 'number_of_lessons', 'duration', 'interval', 'extra_info']
         widgets = {'extra_info': forms.Textarea()}
-        
-    def clean(self):
-        pass
 
     def save(self, user):
         super().save(commit=False)

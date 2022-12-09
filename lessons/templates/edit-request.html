@@ -1,7 +1,7 @@
 {%extends 'base_content.html'%}
 
 {% block title %}
-MSMS - Request a lesson
+MSMS - Edit your request
 {% endblock %}
 
 {% block content %}
@@ -9,13 +9,12 @@ MSMS - Request a lesson
     <div class="row">
         <div div class="col-md-6 offset-md-3">
             <div class="mb-4">
-                <h1>Request lessons</h1>
-                <p>Please fill in the form according to your request requirements.</p>
+                <h1>Edit your request</h1>
+                <p>Please edit your current request.</p>
             </div>
-            {% include "partials/request-form.html" with action="create" %}
+            {% include "partials/request-form.html" with action="edit" reqId=requestId %}
         </div>
     </div>
-</div>
 </div>
 
 {% endblock %}

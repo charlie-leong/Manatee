@@ -65,7 +65,7 @@ class RequestViewTestCase(TestCase, LogInTester):
         after = Request.objects.count()
         self.assertEqual(after, before)
         #with self.assertRaises(Request.DoesNotExist):
-        #   Request.objects.get(created_by = logIn.context["user"].id)
+        #   Request.objects.get(user = logIn.context["user"].id)
 
     def test_unsuccessful_lesson_request(self):
         self.client.post(reverse("log_in"), {"username": self.user.username, "password": "Password123"}, follow= True)
