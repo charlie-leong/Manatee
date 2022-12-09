@@ -43,9 +43,10 @@ def editRequest(httpReq, req_id):
         if (reqToBeUpdated.user.id != httpReq.user.id):
             raise PermissionDenied
         if httpReq.method == 'POST':
-            form = RequestForm(httpReq.POST)
+            form = RequestForm(httpReq.POST, instance= reqToBeUpdated)      # form is initialised with the req data and prev entry to check for changes
             if form.is_valid():
-                updateReqEntry(reqToBeUpdated, form.cleaned_data)
+                if form.has_changed():
+                    updateReqEntry(reqToBeUpdated, form.cleaned_data)
                 return redirect('dashboard')
             messages.add_message(httpReq, messages.ERROR, "Invalid form input")
         editForm = RequestForm(instance= reqToBeUpdated)
