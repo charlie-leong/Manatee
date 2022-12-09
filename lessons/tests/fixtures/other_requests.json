@@ -1,0 +1,15 @@
+[
+    {
+        "model": "lessons.request",
+        "pk": 2,
+        "fields": {
+            "availability": "WEDNESDAY",
+            "number_of_lessons": 1,
+            "interval": 1,
+            "duration": 30,
+            "extra_info": "Please do not assign me any teacher who is called Senir, Howard or Stephen. Otherwise I might start breaking stuff.",
+            "user": 2,
+            "is_approved": false
+        }
+    }
+]
