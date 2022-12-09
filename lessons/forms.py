@@ -77,8 +77,8 @@ class BankTransferForm(forms.ModelForm):
             user = user_,
             lesson = lesson_,
             invoice_number = self.cleaned_data.get("invoice_number"),
-            full_invoice_number = user_.id+"-"+invoice_number,
+            full_invoice_number = str(user_.id)+"-"+str(self.cleaned_data.get("invoice_number")),
             cost = lesson_.calculateCost()
         )
-        return request
+        return invoice
 

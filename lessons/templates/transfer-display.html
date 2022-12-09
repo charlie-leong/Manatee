@@ -18,7 +18,7 @@ All transfers{%endblock%}
     </div>
     {% for transfer in allTransfers %}
     <div class="row">
-      <div class="col-sm-1" >#{{transfer.invoice_number}}</div>
+      <div class="col-sm-1" >#{{transfer.full_invoice_number}}</div>
       <div class="col-sm-1" >£{{transfer.pay}}</div>
       <div class="col-sm-1" >{{transfer.paid}}</div>
     </div>

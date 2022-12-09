@@ -66,7 +66,7 @@
     {% include "partials/modal.html" with reqId=req.id %}
     {% elif reqsType == "unpaid" %}
     <div>
-        <a class="btn btn-primary" href="{% url 'bank-transfer' req.id %}">Pay now</a>
+        <a class="btn btn-primary" href="{% url 'bank-transfer' req.request_id %}">Pay now</a>
     </div>
     {% endif %}
 </div>
