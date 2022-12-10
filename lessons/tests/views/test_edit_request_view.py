@@ -14,9 +14,10 @@ class EditRequestTestCase(TestCase, LogInTester):
     ]
 
     def setUp(self):
-        self.request = Request.objects.get(id = 1)
-        self.url = reverse("edit-request", args=[self.request.id])
         self.user = User.objects.get(username = "@johndoe")
+        self.otherUser = User.objects.get(username = "@janedoe")
+        self.request = Request.objects.get(user = self.user)
+        self.url = reverse("edit-request", args=[self.request.id])
         self.editedFormInput = {
             "availability": "WEDNESDAY",
             "number_of_lessons": 1,
@@ -62,7 +63,7 @@ class EditRequestTestCase(TestCase, LogInTester):
     def test_unauthorised_request_edit_from_logged_in_user(self):
         self.client.login(username = self.user.username, password = "Password123")
         self.assertTrue(self._is_logged_in())
-        notCurrUserReq = Request.objects.get(id = 2)
+        notCurrUserReq = Request.objects.get(user = self.otherUser)
         response = self.client.post(reverse("edit-request", args=[notCurrUserReq.id]), self.editedFormInput)
         self.assertEqual(response.status_code, 403)
         self.assertNotEqual(self.request.extra_info, self.editedFormInput["extra_info"])

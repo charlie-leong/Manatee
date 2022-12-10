@@ -15,9 +15,10 @@ class DeleteRequestTestCase(TestCase, LogInTester):
     ]
 
     def setUp(self):
-        self.requestToBeDeleted = Request.objects.get(id = 1)
-        self.url = reverse("delete-request", args=[self.requestToBeDeleted.id])
         self.user = User.objects.get(username = "@johndoe")
+        self.otherUser = User.objects.get(username = "@janedoe")
+        self.requestToBeDeleted = Request.objects.get(user= self.user)
+        self.url = reverse("delete-request", args=[self.requestToBeDeleted.id])
 
     def test_delete_request_url(self):
         self.assertEqual(self.url, f"/delete-request/{self.requestToBeDeleted.id}")
@@ -48,7 +49,7 @@ class DeleteRequestTestCase(TestCase, LogInTester):
     def test_unauthorised_request_delete_from_logged_in_user(self):
         self.client.login(username = self.user.username, password = "Password123")
         self.assertTrue(self._is_logged_in())
-        notCurrUserReq = Request.objects.get(id = 2)
+        notCurrUserReq = Request.objects.get(user = self.otherUser)
         before = Request.objects.count()
         response = self.client.post(reverse("delete-request", args=[notCurrUserReq.id]))
         self.assertEqual(response.status_code, 403)

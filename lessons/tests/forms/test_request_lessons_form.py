@@ -4,8 +4,12 @@ from lessons.models import Request, User
 from django import forms
 
 class RequestFormTestCase(TestCase):
+    fixtures = [
+        "lessons/tests/fixtures/default_user.json"
+    ]
 
     def setUp(self):
+        self.user = User.objects.get(username = "@johndoe")
         self.formInput = {
             "availability": "WEDNESDAY",
             "number_of_lessons": 2,
@@ -34,23 +38,14 @@ class RequestFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
     
     def test_form_saves_correctly(self):
-        # create a user to provide a value for the request.user field
-        user = User.objects.create_user(
-            "@johndoe",
-            first_name = "John",
-            last_name = "Doe",
-            email = "johndoe@example.org",
-            password = "Password123"
-        )
-
         form = RequestForm(data = self.formInput)
         before = Request.objects.count()
-        form.save(user)
+        form.save(self.user)
         after = Request.objects.count()
         self.assertEqual(after, before + 1)
-        request = Request.objects.get(id = 1)
+        request = Request.objects.get(user = self.user)
         self.assertEqual(request.availability, "WEDNESDAY")
         self.assertEqual(request.number_of_lessons, 2)
         self.assertEqual(request.interval, 2)
         self.assertEqual(request.duration, 60)
-        self.assertEqual(request.user.id, user.id)
+        self.assertEqual(request.user.id, self.user.id)
