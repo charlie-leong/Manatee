@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
+import uuid
 
 # Create your models here.
 AVAILABILITY = [
@@ -47,6 +48,7 @@ class Request(models.Model):
     lesson is initially not approved, but once it has a Lesson object related
     to it, it will automatically become approved.
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1,)
     interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, verbose_name="Interval (weeks)", default= 1)
