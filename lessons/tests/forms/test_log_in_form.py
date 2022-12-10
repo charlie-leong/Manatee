@@ -10,7 +10,7 @@ class LogInFormTestCase(TestCase):
 
     def setUp(self):
         self.form_input = {
-            "username" : "@janedoe",
+            "email" : "janedoe@exmaple.org",
             "password" : "Password123"
         }
     
@@ -18,7 +18,7 @@ class LogInFormTestCase(TestCase):
     def test_form_has_necessary_fields(self):
         """ Form has necessary fields. """
         form = LogInForm()
-        self.assertIn("username", form.fields)
+        self.assertIn("email", form.fields)
         self.assertIn("password", form.fields)
         pw_widget = form.fields["password"].widget
         self.assertTrue(isinstance(pw_widget, forms.PasswordInput))
@@ -31,8 +31,8 @@ class LogInFormTestCase(TestCase):
 
     # form does not accept blank username
     def test_no_blank_username(self):
-        """ Form doesn't accept blank username. """
-        self.form_input["username"] = ""
+        """ Form doesn't accept blank email. """
+        self.form_input["email"] = ""
         form = LogInForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 

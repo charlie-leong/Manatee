@@ -4,13 +4,19 @@ Admin view for the application.
 from django.contrib import admin
 
 from lessons.models import BankTransfer, Lesson, Request, User
+from .models import *
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+
 # Register your models here.
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """ Admin view for the User model. """
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
+    model = User
     list_display = [
-        "username", "first_name", "last_name", "email", "is_staff", "is_superuser"
+        "first_name", "last_name", "email", "is_staff", "is_superuser"
     ]
 
 class LessonInline(admin.TabularInline):
@@ -70,3 +76,4 @@ class BankTransferAdmin(admin.ModelAdmin):
 class LessonAdmin(admin.ModelAdmin):
     """ Admin view for lessons. """
     list_display = ["request", "teacher", "startDate", "paid"]
+
