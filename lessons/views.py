@@ -50,7 +50,7 @@ def bank_transfer(httpReq, lesson_id):
             return HttpResponseRedirect(reverse('transfer-display'))
 
     form = BankTransferForm(httpReq.POST or None)
-    return render(httpReq, 'bank-transfer.html',{ 'lessonId':lesson_id, 'form':form})
+    return render(httpReq, 'bank-transfer.html',{'lessonId':lesson_id, 'lessonTBP':lessonToBePaid,'form':form})
 
 @login_prohibited
 def log_in(request):

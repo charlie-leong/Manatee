@@ -1,0 +1,7 @@
+<form action="{% url 'bank-transfer' lesson %}" method="post">
+    {% csrf_token %}
+    {{form.non_field_errors}}
+    {{form.as_p}}
+    <input type="submit" value="Submit request" class="btn btn-primary">
+    <input type="reset" value="Clear" class="btn btn-secondary">
+</form>

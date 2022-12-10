@@ -15,10 +15,21 @@ Record Bank Transfer
         <div div class="col-md-6 offset-md-3">
             <div class="mb-4">
                 <h1>Bank Transfer</h1>
-                <p>Please enter the invoice number for this payment.</p>
-            </div>
-            {% include "partials/bankTransfer-form.html" with lesson=lessonId  %}
-        </div>
+                <div>
+                    <h6>Your bank balance : </h6> 0{{user.balance}}
+
+                </div>
+
+                <div>
+                    <h6>Lesson to be paid for : </h6>
+                    {% include "partials/lessonDisplay.html" with lesson=lessonTBP %}
+
+                </div>
+                <div>
+                    <p>Please enter the invoice number for this payment.</p>
+                {% include "partials/bankTransfer-form.html" with lesson=lessonId  %}
+
+                </div>
     </div>
 </div>
 
