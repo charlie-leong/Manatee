@@ -47,7 +47,7 @@ class User(AbstractUser):
     balance = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.email
+        return f'{self.first_name} {self.last_name}'
 
 class Request(models.Model):
     """
@@ -75,7 +75,7 @@ class Request(models.Model):
         self.save()
     
     def __str__(self):
-        return f'Request-{self.id} by {self.user}'
+        return f'Request-{self.id}'
 
 class Lesson(models.Model):
     """

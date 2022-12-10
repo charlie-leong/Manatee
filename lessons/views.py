@@ -83,7 +83,7 @@ def sign_up(request):
         form = SignUpForm(request.POST) # creates a bound version of form with post data
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            login(request, user, backend="allauth.account.auth_backends.AuthenticationBackend")
             return redirect('dashboard')
     else:
         form = SignUpForm()
