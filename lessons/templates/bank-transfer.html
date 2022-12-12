@@ -15,22 +15,42 @@ Record Bank Transfer
         <div div class="col-md-6 offset-md-3">
             <div class="mb-4">
                 <h1>Bank Transfer</h1>
-                <div>
-                    <h6>Your bank balance : </h6> 0{{user.balance}}
 
-                </div>
+                <table>
+                    <tr>
+                        <td style="padding: 0 15px;">
+                            <div class="card"
+                                style='width: 18rem;margin-top:25px; margin-right: auto; text-align: center;'>
+                                <div class="card-body">
+                                    <h5 class="card-title">Lesson to be paid for :</h5>
+                                    {% include "partials/lessonDisplay.html" with lesson=lessonTBP %}
+                                </div>
+                            </div>
 
-                <div>
-                    <h6>Lesson to be paid for : </h6>
-                    {% include "partials/lessonDisplay.html" with lesson=lessonTBP %}
+                        </td>
+                        <td style="padding: 0 15px;">
+                            <div style="text-align: center;">
+                                <h6>Your bank balance : </h6>
+                                £{{user.balance}}
+                            </div>
+                        </td>
+                    </tr>
 
-                </div>
-                <div>
-                    <p>Please enter the invoice number for this payment.</p>
-                {% include "partials/bankTransfer-form.html" with lesson=lessonId  %}
+                </table>
+                <h5 class='mt-5'>Please enter the invoice number for this payment:</h5>
+                {% include "partials/bankTransfer-form.html" with lesson=lessonId %}
 
-                </div>
+            </div>
+        </div>
+        {% for message in messages %}
+        <div class="alert alert-danger">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+            {{ message }}
+
+            {% endfor %}
+        </div>
     </div>
-</div>
 
-{% endblock %}
+
+
+    {% endblock %}

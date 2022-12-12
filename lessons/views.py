@@ -58,10 +58,11 @@ def editRequest(httpReq, req_id):
 def bank_transfer(httpReq, lesson_id):
     lessonToBePaid = Lesson.objects.get(request_id = lesson_id)
     if httpReq.method == 'POST':
-      form = BankTransferForm(httpReq.POST)
-      if form.is_valid():
+        form = BankTransferForm(httpReq.POST)
+        if form.is_valid() and httpReq.user.balance >= lessonToBePaid.calculateCost():
             form.save(httpReq.user, lessonToBePaid)
             return HttpResponseRedirect(reverse('transfer-display'))
+        messages.add_message(httpReq, messages.ERROR,'Insufficient funds to carry out payment')
 
     form = BankTransferForm(httpReq.POST or None)
     return render(httpReq, 'bank-transfer.html',{'lessonId':lesson_id, 'lessonTBP':lessonToBePaid,'form':form})

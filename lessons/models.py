@@ -119,7 +119,8 @@ class BankTransfer(models.Model):
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     invoice_number=models.CharField(max_length=3)
     full_invoice_number = models.CharField(max_length=8)
-    cost = models.PositiveIntegerField(default=0)
+    cost = models.PositiveIntegerField(default=0 )
+
 
     def save(self, *args, **kwargs):
         self.lesson.set_paid_to_true() 
