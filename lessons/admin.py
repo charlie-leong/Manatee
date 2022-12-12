@@ -16,7 +16,7 @@ class UserAdmin(admin.ModelAdmin):
     form = CustomUserChangeForm
     model = User
     list_display = [
-        "first_name", "last_name", "email", "is_staff", "is_superuser"
+        "email", "first_name", "last_name", "is_staff", "is_superuser"
     ]
 
 class LessonInline(admin.TabularInline):
@@ -40,7 +40,7 @@ class pendingRequestAdmin(admin.ModelAdmin):
     
     @admin.display(description="Request info")
     def request_info(self, obj):
-        return f'request-{obj.id}'
+        return f'Request-{obj.id}'
 
     list_display = [
        "request_info", "user", "is_approved"
@@ -56,7 +56,7 @@ class approvedRequestAdmin(admin.ModelAdmin):
     
     @admin.display(description="Request info")
     def request_info(self, obj):
-        return f'request-{obj.id}'
+        return f'Request-{obj.id}'
 
     list_display = [
        "request_info", "user", "is_approved"
@@ -75,5 +75,10 @@ class BankTransferAdmin(admin.ModelAdmin):
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
     """ Admin view for lessons. """
-    list_display = ["request", "teacher", "startDate", "paid"]
+
+    @admin.display(description="Student")
+    def user_name(self, obj):
+        return obj.request.user
+
+    list_display = ["request", "teacher", "user_name", "startDate", "paid"]
 

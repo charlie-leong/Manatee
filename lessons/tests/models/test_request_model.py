@@ -66,11 +66,9 @@ class RequestModelTestCase(TestCase):
         self._assert_request_is_invalid()
 
     def test_cascade_on_delete_user(self):
-        user = User.objects.get(id = self.user.id)
-        id = user.id
-        user.delete()
+        self.user.delete()
         with self.assertRaises(Request.DoesNotExist):
-            Request.objects.get(user = id)
+            Request.objects.get(user = self.user)
         
     def test_is_not_approved_without_lesson(self):
         self.assertFalse(self.request.is_approved)

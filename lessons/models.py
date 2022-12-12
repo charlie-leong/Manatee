@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 All models for the lessons application.
 """
@@ -6,12 +5,12 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
-=======
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+import uuid
 #from django.utils.translation import ugettext_lazy as _
->>>>>>> update_username_log_in
+
 
 # Create your models here.
 AVAILABILITY = [
@@ -44,11 +43,11 @@ class User(AbstractUser):
     # username = None
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-<<<<<<< HEAD
-    email = models.EmailField(unique=True, blank=False)
-    
+    email = models.EmailField(unique=True, blank=False)  # check if need to edit
+    balance = models.PositiveIntegerField(default=0)
+
     def __str__(self):
-        return self.username
+        return f'{self.first_name} {self.last_name}'
 
 class Request(models.Model):
     """
@@ -56,6 +55,7 @@ class Request(models.Model):
     lesson is initially not approved, but once it has a Lesson object related
     to it, it will automatically become approved.
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1,)
     interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, verbose_name="Interval (weeks)", default= 1)
@@ -75,7 +75,7 @@ class Request(models.Model):
         self.save()
     
     def __str__(self):
-        return f'Request-{self.id} by {self.user}'
+        return f'Request-{self.id}'
 
 class Lesson(models.Model):
     """
@@ -106,15 +106,6 @@ class Lesson(models.Model):
         self.request.set_approved_to_false()
         super().delete(*args, **kwargs)
 
-=======
-    email = models.EmailField(unique=True, blank=False)  # check if need to edit
-    balance = models.PositiveIntegerField(default=0)
-
-
-    def __str__(self):
-        return self.email
-   
->>>>>>> update_username_log_in
 class BankTransfer(models.Model):
     user_ID=models.CharField(max_length=4)
     invoice_number=models.CharField(max_length=3)
@@ -123,28 +114,6 @@ class BankTransfer(models.Model):
     paid = models.BooleanField()
 
     balance = 0
-<<<<<<< HEAD
-=======
-   
-class Lesson(models.Model):
-    assigned_student_id = models.CharField(max_length = 10)
-    assigned_teacher_id = models.CharField(max_length = 10)
-    number_of_lessons = models.PositiveIntegerField(default=1)
-    week_interval = models.PositiveIntegerField(default=1)
-    duration = models.PositiveIntegerField(default=60)
-    paid = False
-
-    def togglePaid():
-        if(paid == False):
-            paid = False
-            return paid
-        paid = True
-        return paid
-    
-    def calculateCost():
-        baseCost = 20
-        return baseCost * duration/60 * number_of_lessons
-
 
 # basically defining model manager for no username 
 # class UserManager(BaseUserManager):
@@ -177,6 +146,3 @@ class Lesson(models.Model):
 #             raise ValueError('Superuser must have is_superuser=True.')
 
 #         return self._create_user(email, password, **extra_fields)
-
-
->>>>>>> update_username_log_in

@@ -1,7 +1,7 @@
 [
     {
         "model": "lessons.request",
-        "pk": 1,
+        "pk": "3c284814-6b48-4ad4-975b-036b73c4839c",
         "fields": {
             "availability": "WEDNESDAY",
             "number_of_lessons": 2,
