@@ -14,7 +14,7 @@
           {{user.username}}
         </a>
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="user_settings_dropdown">
-          <a class="dropdown-item" href="#">Edit Profile</a>
+          <a class="dropdown-item" href="#">Balance: £{{user.print_balance}}</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url "log_out" %}">Logout</a>
         </div>

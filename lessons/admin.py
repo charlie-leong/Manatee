@@ -13,7 +13,6 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 class UserAdmin(admin.ModelAdmin):
     """ Admin view for the User model. """
     add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
     model = User
     list_display = [
         "email", "first_name", "last_name", "is_staff", "is_superuser"

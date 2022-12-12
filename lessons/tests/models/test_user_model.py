@@ -42,3 +42,12 @@ class UserModelTestCase(TestCase):
         self.second_user = User.objects.get(username = "@janedoe")
         self.user.username = self.second_user.username
         self._assert_user_is_invalid()
+    
+    # test that subtracting a value larger than the balance is not allowed
+    def test_subtracting_amount_bigger_than_balance(self):
+        with self.assertRaises(ValueError):
+            self.user.adjust_balance(-101.01)
+    
+    def test_subtract_from_balance(self):
+        self.user.adjust_balance(10.1)
+        self.assertEqual(self.user.balance, 110.1)

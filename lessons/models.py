@@ -9,6 +9,7 @@ from django.core.validators import RegexValidator, MinValueValidator, MaxValueVa
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 import uuid
+from decimal import Decimal
 #from django.utils.translation import ugettext_lazy as _
 
 
@@ -44,7 +45,16 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)  # check if need to edit
-    balance = models.PositiveIntegerField(default=100)
+    balance = models.FloatField(default = 100)
+
+    def adjust_balance(self, amount):
+        if self.balance + amount < 0:
+            raise ValueError("Insufficient funds")
+        self.balance += amount
+        self.save()
+
+    def print_balance(self):
+        return '{0:.2f}'.format((self.balance))
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -95,8 +105,20 @@ class Lesson(models.Model):
         baseCost = 20
         return baseCost * self.request.duration/60 * self.request.number_of_lessons
     
+    def printCost(self):
+        cost = self.calculateCost()
+        return '{0:.2f}'.format((cost))
+    
     def __str__(self):
         return f'This lesson is taught by {self.teacher}'
+    
+    def pay_lesson(self):
+        try:
+            self.request.user.adjust_balance(-self.calculateCost())
+            self.set_paid_to_true()
+        except ValueError as e:
+            self.set_paid_to_false()
+            raise e
 
     def set_paid_to_false(self):
         self.paid = False
@@ -117,7 +139,7 @@ class Lesson(models.Model):
 class BankTransfer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
-    invoice_number=models.CharField(max_length=3)
+    invoice_number=models.CharField(max_length=3, unique=True, error_messages={"unique": "Invoice numbers must be unique"})
     full_invoice_number = models.CharField(max_length=8)
     cost = models.PositiveIntegerField(default=0 )
 
@@ -125,36 +147,3 @@ class BankTransfer(models.Model):
     def save(self, *args, **kwargs):
         self.lesson.set_paid_to_true() 
         super().save(*args, **kwargs)
-
-# basically defining model manager for no username 
-# class UserManager(BaseUserManager):
-#     use_in_migrations = True
-
-#     def _create_user(self, email, password, first_name, last_name):  # check if add id field
-#         """Create and save a User with the given email and password."""
-#         if not email:
-#             raise ValueError('email must be set')
-#         email = self.normalize_email(email)
-#         user = self.model(email=email, first_name=first_name, last_name=last_name)
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-
-#     def create_user(self, email, password=None, **extra_fields):
-#         """Create and save a regular User with the given email and password."""
-#         extra_fields.setdefault('is_staff', False)
-#         extra_fields.setdefault('is_superuser', False)
-#         return self._create_user(email, password, **extra_fields)
-
-#     def create_superuser(self, email, password, **extra_fields):
-#         """Create and save a SuperUser with the given email and password."""
-#         extra_fields.setdefault('is_staff', True)
-#         extra_fields.setdefault('is_superuser', True)
-
-#         if extra_fields.get('is_staff') is not True:
-#             raise ValueError('Superuser must have is_staff=True.')
-#         if extra_fields.get('is_superuser') is not True:
-#             raise ValueError('Superuser must have is_superuser=True.')
-
-#         return self._create_user(email, password, **extra_fields)
-

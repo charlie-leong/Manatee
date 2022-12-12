@@ -54,15 +54,18 @@ def editRequest(httpReq, req_id):
     except Request.DoesNotExist:
         return HttpResponseNotFound()
 
-
+@login_required
 def bank_transfer(httpReq, lesson_id):
     lessonToBePaid = Lesson.objects.get(request_id = lesson_id)
     if httpReq.method == 'POST':
         form = BankTransferForm(httpReq.POST)
-        if form.is_valid() and httpReq.user.balance >= lessonToBePaid.calculateCost():
-            form.save(httpReq.user, lessonToBePaid)
-            return HttpResponseRedirect(reverse('transfer-display'))
-        messages.add_message(httpReq, messages.ERROR,'Insufficient funds to carry out payment')
+        if form.is_valid():
+            try:
+                lessonToBePaid.pay_lesson()
+                form.save(httpReq.user, lessonToBePaid)
+                return HttpResponseRedirect(reverse('transfer-display'))
+            except ValueError as errorMessage:
+                messages.add_message(httpReq, messages.ERROR, errorMessage)
 
     form = BankTransferForm(httpReq.POST or None)
     return render(httpReq, 'bank-transfer.html',{'lessonId':lesson_id, 'lessonTBP':lessonToBePaid,'form':form})
