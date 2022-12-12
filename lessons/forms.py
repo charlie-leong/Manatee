@@ -3,8 +3,10 @@ All of the forms of the lesson application.
 """
 from django import forms
 from django.core.validators import RegexValidator
-
 from lessons.models import BankTransfer, Lesson, Request, User
+from .models import *
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 
 class RequestForm(forms.ModelForm):
     """ Form that will let users create a Request object. """
@@ -27,7 +29,7 @@ class RequestForm(forms.ModelForm):
 
 
 class LogInForm(forms.Form): #not associated with a particular user model
-    username = forms.CharField(label="Username")
+    email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
 
 class SignUpForm(forms.ModelForm):
@@ -82,3 +84,16 @@ class BankTransferForm(forms.ModelForm):
         )
         return invoice
 
+
+
+class CustomUserCreationForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')

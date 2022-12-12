@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lessons',
-    "widget_tweaks"
+    "widget_tweaks",
+    'django.contrib.sites', # for custom user
+
+    'allauth', #
+    'allauth.account', #
+    'allauth.socialaccount', #
 ]
 
 MIDDLEWARE = [
@@ -132,3 +137,23 @@ LOGIN_URL = "log_in"
 
 # dashboard url that redirects users who are logged in and are accessing login prohibited views
 REDIRECT_URL_WHEN_LOGGED_IN = "dashboard"
+
+# log in from email and not username
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+SITE_ID = 1
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True

@@ -30,6 +30,7 @@ class Command(BaseCommand):
     def generate_students(self):
         """ Generates around 100 students. """
         for i in range(100):
+            print(f'Seeding user {i}',  end='\r')
             try:
                 first_name = self.faker.first_name()
                 last_name = self.faker.last_name()
@@ -46,11 +47,13 @@ class Command(BaseCommand):
             # if a duplicate name combo is used, do not create user
             except IntegrityError:
                 continue
+        print("Students complete")
     
     def generate_requests(self):
         """ Generates around 70 requests. """
         pks = User.objects.filter(is_staff = False).values_list("pk", flat=True)
         for i in range(75):
+            print(f'Seeding request {i}',  end='\r')
             random_pk = random.choice(pks)
             user = User.objects.get(pk = random_pk)
             Request.objects.create(
@@ -60,13 +63,15 @@ class Command(BaseCommand):
                 interval = random.choice(LESSON_INTERVAL)[0],
                 duration = random.choice(DURATIONS)[0]
             )
-    
+        print("Requests complete")
+
     def generate_lessons(self):
         """ Generates around 60 lessons. """
         for i in range(60):
             pks = Request.objects.filter(is_approved = False).values_list("pk", flat = True)
             random_pk = random.choice(pks)
             request = Request.objects.get(pk = random_pk)
+            print(f'Seeding lesson {i}',  end='\r')
             try:
                 Lesson.objects.create(
                     request = request,
@@ -77,6 +82,7 @@ class Command(BaseCommand):
             # if a request already has a lesson, do not create another lesson
             except IntegrityError:
                 continue
+        print("Lessons complete")
 
     def generate_random_date(self):
         """ Generates random date. """

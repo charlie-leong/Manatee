@@ -5,6 +5,12 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+import uuid
+#from django.utils.translation import ugettext_lazy as _
+
 
 # Create your models here.
 AVAILABILITY = [
@@ -34,12 +40,14 @@ class User(AbstractUser):
             regex= r'^@\w{3,}$',
             message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
         )])
+    # username = None
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
-    
+    email = models.EmailField(unique=True, blank=False)  # check if need to edit
+    balance = models.PositiveIntegerField(default=0)
+
     def __str__(self):
-        return self.username
+        return f'{self.first_name} {self.last_name}'
 
 class Request(models.Model):
     """
@@ -47,6 +55,7 @@ class Request(models.Model):
     lesson is initially not approved, but once it has a Lesson object related
     to it, it will automatically become approved.
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     availability =models.CharField(max_length=10, choices=AVAILABILITY, default='MONDAY')
     number_of_lessons=models.PositiveIntegerField(choices= NUM_LESSONS, default=1,)
     interval = models.PositiveIntegerField(choices=LESSON_INTERVAL, verbose_name="Interval (weeks)", default= 1)
@@ -66,7 +75,7 @@ class Request(models.Model):
         self.save()
     
     def __str__(self):
-        return f'Request-{self.id} by {self.user}'
+        return f'Request-{self.id}'
 
 class Lesson(models.Model):
     """
@@ -116,4 +125,35 @@ class BankTransfer(models.Model):
         self.lesson.set_paid_to_true() 
         super().save(*args, **kwargs)
 
-    
+# basically defining model manager for no username 
+# class UserManager(BaseUserManager):
+#     use_in_migrations = True
+
+#     def _create_user(self, email, password, first_name, last_name):  # check if add id field
+#         """Create and save a User with the given email and password."""
+#         if not email:
+#             raise ValueError('email must be set')
+#         email = self.normalize_email(email)
+#         user = self.model(email=email, first_name=first_name, last_name=last_name)
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+
+#     def create_user(self, email, password=None, **extra_fields):
+#         """Create and save a regular User with the given email and password."""
+#         extra_fields.setdefault('is_staff', False)
+#         extra_fields.setdefault('is_superuser', False)
+#         return self._create_user(email, password, **extra_fields)
+
+#     def create_superuser(self, email, password, **extra_fields):
+#         """Create and save a SuperUser with the given email and password."""
+#         extra_fields.setdefault('is_staff', True)
+#         extra_fields.setdefault('is_superuser', True)
+
+#         if extra_fields.get('is_staff') is not True:
+#             raise ValueError('Superuser must have is_staff=True.')
+#         if extra_fields.get('is_superuser') is not True:
+#             raise ValueError('Superuser must have is_superuser=True.')
+
+#         return self._create_user(email, password, **extra_fields)
+

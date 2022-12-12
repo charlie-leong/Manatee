@@ -2,3 +2,4 @@ coverage
 Django
 Faker
 django-widget-tweaks==1.4.12
+django-allauth

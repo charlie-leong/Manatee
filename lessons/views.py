@@ -4,13 +4,14 @@ All views for the lessons application.
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect, render 
 from django.urls import reverse
 from .forms import BankTransferForm, LogInForm, RequestForm, SignUpForm
 from .helpers import login_prohibited
 from .models import BankTransfer, Request, Lesson
 from .utils import updateReqEntry
+from django.core.exceptions import PermissionDenied
 
 def home(request):
     return render(request, 'home.html')
@@ -24,22 +25,35 @@ def dashboard(request):
               
     return render(request, "dashboard.html", {"pending": pendingReqs, "unpaid": unpaidReqs, "paid": paidReqs})
 
+@login_required
 def deleteRequest(httpReq, req_id):
-    Request.objects.filter(user = httpReq.user, id = req_id).delete()
-    # return 403 forbidden
-    return redirect('dashboard')
+    try:
+        req = Request.objects.get(id = req_id)
+        if (req.user.id != httpReq.user.id):
+            raise PermissionDenied
+        req.delete()
+        return redirect('dashboard')
+    except Request.DoesNotExist:
+        return HttpResponseNotFound()
 
+@login_required
 def editRequest(httpReq, req_id):
-    reqToBeUpdated = Request.objects.get(user = httpReq.user, id = req_id)
-    if httpReq.method == 'POST':
-        form = RequestForm(httpReq.POST)
-        if form.is_valid():
-            updateReqEntry(reqToBeUpdated, form.cleaned_data)
-            return redirect('dashboard')
-        messages.add_message(httpReq, messages.ERROR, "Invalid form input")
-    
-    editForm = RequestForm(instance= reqToBeUpdated)
-    return render(httpReq, 'edit-request.html', {'requestId': req_id,'form': editForm})
+    try:
+        reqToBeUpdated = Request.objects.get(id = req_id)
+        if (reqToBeUpdated.user.id != httpReq.user.id):
+            raise PermissionDenied
+        if httpReq.method == 'POST':
+            form = RequestForm(httpReq.POST, instance= reqToBeUpdated)      # form is initialised with the req data and prev entry to check for changes
+            if form.is_valid():
+                if form.has_changed():
+                    updateReqEntry(reqToBeUpdated, form.cleaned_data)
+                return redirect('dashboard')
+            messages.add_message(httpReq, messages.ERROR, "Invalid form input")
+        editForm = RequestForm(instance= reqToBeUpdated)
+        return render(httpReq, 'edit-request.html', {'requestId': req_id,'form': editForm})
+    except Request.DoesNotExist:
+        return HttpResponseNotFound()
+
 
 def bank_transfer(httpReq, lesson_id):
     lessonToBePaid = Lesson.objects.get(request_id = lesson_id)
@@ -58,16 +72,16 @@ def log_in(request):
         form = LogInForm(request.POST)
         next = request.POST.get('next') or ''
         if form.is_valid():
-            #extract and verify username passwrod combo
-            username = form.cleaned_data.get('username')
+            #extract and verify email passwrod combo
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
                 redirect_url = next or "dashboard"
                 return redirect(redirect_url)
         # If invalid login details
-        messages.add_message(request, messages.ERROR, "Invalid username or password")
+        messages.add_message(request, messages.ERROR, "Invalid email or password")
     else:
         next = request.GET.get('next') or ''
     form = LogInForm()
@@ -80,7 +94,7 @@ def sign_up(request):
         form = SignUpForm(request.POST) # creates a bound version of form with post data
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            login(request, user, backend="allauth.account.auth_backends.AuthenticationBackend")
             return redirect('dashboard')
     else:
         form = SignUpForm()
@@ -97,11 +111,6 @@ def request_lessons(request):
         messages.add_message(request, messages.ERROR, "Invalid form input")
     form = RequestForm(request.POST or None)
     return render(request, 'request-lessons.html', {'form': form})
-
-@login_required
-def request_display(request):
-    all_requests = Request.objects.all()
-    return render (request, 'request-display.html', {'allRequests':all_requests})
 
 @login_required
 def log_out(request):
