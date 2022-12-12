@@ -3,7 +3,6 @@
 
 {% block title %}Record Transfer{% endblock %}
 
-
 {%block jumbotron%}
 Record Bank Transfer
 {%endblock%}
@@ -16,41 +15,40 @@ Record Bank Transfer
             <div class="mb-4">
                 <h1>Bank Transfer</h1>
 
-                <table>
-                    <tr>
-                        <td style="padding: 0 15px;">
-                            <div class="card"
-                                style='width: 18rem;margin-top:25px; margin-right: auto; text-align: center;'>
-                                <div class="card-body">
-                                    <h5 class="card-title">Lesson to be paid for :</h5>
-                                    {% include "partials/lessonDisplay.html" with lesson=lessonTBP %}
-                                </div>
-                            </div>
+                <div style='text-align: center;'>
 
-                        </td>
-                        <td style="padding: 0 15px;">
-                            <div style="text-align: center;">
+                    <table>
+                        <tr>
+                            <td style="padding: 0 15px;">
+                                <div class="card" style='width: 18rem;margin-top:25px; margin-right: auto; '>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Lesson to be paid for :</h5>
+                                        {% include "partials/lessonDisplay.html" with lesson=lessonTBP %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 0 15px;">
                                 <h6>Your bank balance : </h6>
                                 £{{user.balance}}
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    </table>
 
-                </table>
-                <h5 class='mt-5'>Please enter the invoice number for this payment:</h5>
-                {% include "partials/bankTransfer-form.html" with lesson=lessonId %}
+                    <h5 class='mt-5'>Please enter the invoice number for this payment:</h5>
+                    {% include "partials/bankTransfer-form.html" with lesson=lessonId %}
+
+                </div>
 
             </div>
         </div>
+
         {% for message in messages %}
         <div class="alert alert-danger">
             <a class="close" href="#" data-dismiss="alert">×</a>
             {{ message }}
-
             {% endfor %}
         </div>
+
     </div>
-
-
-
-    {% endblock %}
+</div>
+{% endblock %}
