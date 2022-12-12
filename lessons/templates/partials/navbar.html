@@ -10,7 +10,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     {% if user.is_authenticated %}
-    {% include "partials/navbar_menu.html" %}
+    {% include "partials/navbar_menu.html" with user=user %}
     {% endif %}
   </div>
 </nav>
