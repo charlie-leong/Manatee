@@ -3,17 +3,52 @@
 
 {% block title %}Record Transfer{% endblock %}
 
-
 {%block jumbotron%}
 Record Bank Transfer
 {%endblock%}
 
 
 {% block content %}
-    <form action="{% url 'bank-transfer' %}" method="post">
-        {% csrf_token %} 
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
-        <input type="reset" value="Clear">
+<div class="container">
+    <div class="row">
+        <div div class="col-md-6 offset-md-3">
+            <div class="mb-4">
+                <h1>Bank Transfer</h1>
 
+                <div style='text-align: center;'>
+
+                    <table>
+                        <tr>
+                            <td style="padding: 0 15px;">
+                                <div class="card" style='width: 18rem;margin-top:25px; margin-right: auto; '>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Lesson to be paid for :</h5>
+                                        {% include "partials/lessonDisplay.html" with lesson=lessonTBP %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 0 15px;">
+                                <h6>Your bank balance : </h6>
+                                £{{user.balance}}
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h5 class='mt-5'>Please enter the invoice number for this payment:</h5>
+                    {% include "partials/bankTransfer-form.html" with lesson=lessonId %}
+
+                </div>
+
+            </div>
+        </div>
+
+        {% for message in messages %}
+        <div class="alert alert-danger">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+            {{ message }}
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
 {% endblock %}

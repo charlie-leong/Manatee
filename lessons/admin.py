@@ -69,7 +69,7 @@ class approvedRequestAdmin(admin.ModelAdmin):
 class BankTransferAdmin(admin.ModelAdmin):
     """ Admin view for bank transfers. """
     list_display = [
-        "user_ID", "invoice_number", "full_invoice_number", "pay", "paid"
+        "user", "lesson","invoice_number", "full_invoice_number", "cost"
     ]
 
 @admin.register(Lesson)

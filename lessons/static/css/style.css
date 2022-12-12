@@ -4,5 +4,9 @@
     margin-bottom:0;
 }
 
-
-
+#lessonCard{
+    width: 18rem; 
+    margin-top:25px; 
+    margin-right: auto; 
+    text-align: center;
+}

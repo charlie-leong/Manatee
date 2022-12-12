@@ -44,7 +44,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)  # check if need to edit
-    balance = models.PositiveIntegerField(default=0)
+    balance = models.PositiveIntegerField(default=100)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -97,6 +97,14 @@ class Lesson(models.Model):
     
     def __str__(self):
         return f'This lesson is taught by {self.teacher}'
+
+    def set_paid_to_false(self):
+        self.paid = False
+        self.save()
+
+    def set_paid_to_true(self):
+        self.paid = True
+        self.save()
     
     def save(self, *args, **kwargs):
         self.request.set_approved_to_true()
@@ -107,13 +115,16 @@ class Lesson(models.Model):
         super().delete(*args, **kwargs)
 
 class BankTransfer(models.Model):
-    user_ID=models.CharField(max_length=4)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     invoice_number=models.CharField(max_length=3)
     full_invoice_number = models.CharField(max_length=8)
-    pay = models.PositiveIntegerField()
-    paid = models.BooleanField()
+    cost = models.PositiveIntegerField(default=0 )
 
-    balance = 0
+
+    def save(self, *args, **kwargs):
+        self.lesson.set_paid_to_true() 
+        super().save(*args, **kwargs)
 
 # basically defining model manager for no username 
 # class UserManager(BaseUserManager):
@@ -146,3 +157,4 @@ class BankTransfer(models.Model):
 #             raise ValueError('Superuser must have is_superuser=True.')
 
 #         return self._create_user(email, password, **extra_fields)
+
