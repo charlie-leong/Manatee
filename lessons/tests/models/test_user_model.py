@@ -50,4 +50,4 @@ class UserModelTestCase(TestCase):
     
     def test_subtract_from_balance(self):
         self.user.adjust_balance(10.1)
-        self.assertEqual(self.user.balance, 110.1)
+        self.assertEqual(self.user.balance, 10.1)
