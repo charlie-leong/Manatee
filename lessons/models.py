@@ -149,7 +149,7 @@ class Lesson(models.Model):
 class BankTransfer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
-    invoice_number = models.CharField(max_length=8, unique=True, error_messages={"unique": "Invoice numbers must be unique"})
+    invoice_number = models.CharField(max_length=10, unique=True, error_messages={"unique": "Invoice numbers must be unique"})
     cost = models.PositiveIntegerField(default=0 )
 
 
