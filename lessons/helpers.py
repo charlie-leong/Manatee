@@ -3,6 +3,7 @@ Helper methods that different view use.
 """
 from django.conf import settings
 from django.shortcuts import redirect
+from .models import Request
 
 def login_prohibited(view_function):
     """ 
@@ -15,3 +16,12 @@ def login_prohibited(view_function):
         else:
             return view_function(request)
     return modified_view_function
+
+# Updates the request object with the new form data.
+def updateReqEntry(requestObj: Request, formData):
+    requestObj.availability = formData.get("availability")
+    requestObj.number_of_lessons = formData.get("number_of_lessons")
+    requestObj.duration = formData.get("duration")
+    requestObj.interval = formData.get("interval")
+    requestObj.extra_info = formData.get("extra_info")
+    requestObj.save()

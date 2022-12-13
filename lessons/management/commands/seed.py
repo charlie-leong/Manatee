@@ -3,14 +3,14 @@ This is the seeder for the application. It should generate a predetermined
 student, admin and superuser. It will then generate around 100 additional
 students, around 70 requests, and around 60 lessons (fulfilled requests).
 """
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from faker import Faker
 
-from datetime import date, timedelta, time
+from datetime import date, time
 import random
 
-from lessons.models import BankTransfer, User, Request, Lesson, AVAILABILITY, DURATIONS, NUM_LESSONS, LESSON_INTERVAL
+from lessons.models import User, Request, Lesson, AVAILABILITY, DURATIONS, NUM_LESSONS, LESSON_INTERVAL
 
 class Command(BaseCommand):
 

@@ -2,7 +2,7 @@
 This is the unseeder for the database. This will delete all requests and
 lessons, and will delete all users that are not admins or superusers
 """
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from lessons.models import BankTransfer,User, Request, Lesson
 
