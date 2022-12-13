@@ -43,7 +43,8 @@ class Command(BaseCommand):
                     first_name = first_name,
                     last_name = last_name,
                     email = email,
-                    password = password
+                    password = password,
+                    balance = random.randint(50, 500)
                 )
             # if a duplicate name combo is used, do not create user
             except IntegrityError:
@@ -62,7 +63,7 @@ class Command(BaseCommand):
                 availability = random.choice(AVAILABILITY)[0],
                 number_of_lessons = random.choice(NUM_LESSONS)[0],
                 interval = random.choice(LESSON_INTERVAL)[0],
-                duration = random.choice(DURATIONS)[0]
+                duration = random.choice(DURATIONS)[0],
             )
         print("Requests complete")
 
