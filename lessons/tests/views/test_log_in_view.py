@@ -12,11 +12,12 @@ from lessons.tests.helpers import LogInTester, reverse_with_next
 
 class LogInViewTestCase(TestCase, LogInTester):
 
-    fixtures = ["lessons/tests/fixtures/default_user.json"]
+    fixtures = ["lessons/tests/fixtures/default_user.json", "lessons/tests/fixtures/other_users.json"]
 
     def setUp(self):
         self.url = reverse("log_in")
         self.user = User.objects.get(username = "@johndoe")
+        self.admin = User.objects.get(username = "@joebiden")
 
     # test that url is correct
     def test_log_in_url(self):
@@ -154,3 +155,15 @@ class LogInViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, form_input, follow = True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)  
         self.assertTemplateUsed(response, "dashboard.html")
+
+    # test that an admin is redirected to the admin page after logging in
+    def test_correct_redirect_after_successful_login_from_admin(self):
+        form_input = {
+            "email" : self.admin.email,
+            "password" : "Password123"
+        }
+        response = self.client.post(self.url, form_input, follow = True)
+        response_url = reverse("admin:index")
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        response_messages = list(response.context['messages'])
+        self.assertEqual(len(response_messages), 0)
