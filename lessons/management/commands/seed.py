@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     last_name = last_name,
                     email = email,
                     password = password,
-                    balance = random.randint(50, 500)
+                    balance = random.randint(10, 500)
                 )
             # if a duplicate name combo is used, do not create user
             except IntegrityError:
