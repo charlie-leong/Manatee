@@ -45,7 +45,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)  # check if need to edit
-    balance = models.FloatField(default = 100)
+    balance = models.FloatField(default = 0)
 
     def adjust_balance(self, amount):
         self.check_sufficient_balance(amount)
