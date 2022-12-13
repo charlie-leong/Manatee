@@ -72,14 +72,15 @@ class BankTransferForm(forms.ModelForm):
     class Meta:
         model = BankTransfer
         fields=['invoice_number']
+    
+    invoice_number = forms.CharField(max_length=3)
 
     def save(self, user_, lesson_):
         super().save(commit=False)
         invoice = BankTransfer.objects.create(
             user = user_,
             lesson = lesson_,
-            invoice_number = self.cleaned_data.get("invoice_number"),
-            full_invoice_number = str(user_.id)+"-"+str(self.cleaned_data.get("invoice_number")),
+            invoice_number = f'{user_.id}-{self.cleaned_data.get("invoice_number")}',
             cost = lesson_.calculateCost()
         )
         return invoice

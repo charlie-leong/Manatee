@@ -101,12 +101,12 @@ class LessonModelTestCase(TestCase):
     # test paying for lesson results in correct balance, and is_paid set to true
     def test_pay_lesson(self):
         self.assertFalse(self.lesson.paid)
-        self.lesson.pay_lesson()
+        self.lesson.pay_lesson("123")
         self.assertTrue(self.lesson.paid)
         self.assertEqual(self.lesson.request.user.balance, 60)
     
     def test_pay_lesson_with_insufficient_funds(self):
         self.lesson.request.user.balance = 30.50
         with self.assertRaises(ValueError):
-            self.lesson.pay_lesson()
+            self.lesson.pay_lesson("123")
             self.assertFalse(self.lesson.paid)

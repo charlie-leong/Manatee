@@ -48,10 +48,13 @@ class User(AbstractUser):
     balance = models.FloatField(default = 100)
 
     def adjust_balance(self, amount):
-        if self.balance + amount < 0:
-            raise ValueError("Insufficient funds")
+        self.check_sufficient_balance(amount)
         self.balance += amount
         self.save()
+
+    def check_sufficient_balance(self, amount):
+        if self.balance + amount < 0:
+            raise ValueError("Insufficient funds")
 
     def print_balance(self):
         return '{0:.2f}'.format((self.balance))
@@ -112,8 +115,15 @@ class Lesson(models.Model):
     def __str__(self):
         return f'This lesson is taught by {self.teacher}'
     
-    def pay_lesson(self):
+    def pay_lesson(self, invoice_num):
         try:
+            self.request.user.check_sufficient_balance(-self.calculateCost())
+            BankTransfer.objects.create(
+                user = self.request.user,
+                lesson = self,
+                invoice_number = f'{self.request.user.id}-{invoice_num}',
+                cost = self.calculateCost()
+            )
             self.request.user.adjust_balance(-self.calculateCost())
             self.set_paid_to_true()
         except ValueError as e:
@@ -139,8 +149,7 @@ class Lesson(models.Model):
 class BankTransfer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
-    invoice_number=models.CharField(max_length=3, unique=True, error_messages={"unique": "Invoice numbers must be unique"})
-    full_invoice_number = models.CharField(max_length=8)
+    invoice_number = models.CharField(max_length=8, unique=True, error_messages={"unique": "Invoice numbers must be unique"})
     cost = models.PositiveIntegerField(default=0 )
 
 
