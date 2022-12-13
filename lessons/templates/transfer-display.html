@@ -13,7 +13,7 @@ All transfers{%endblock%}
       <div class="mb-4">
         <h1>Your Transactions</h1>
       </div>
-  <h5> Current Balance = £{{user.print_balance}}</h5>
+  <h5> Current Balance: £{{user.print_balance}}</h5>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -25,6 +25,7 @@ All transfers{%endblock%}
     <tbody>
       <tr>
         <td>#{{transfer.invoice_number}}</td>
+        <td>£{{transfer.cost}}</td>
         <td>£{{transfer.cost}}</td>
       </tr>
     </tbody>
