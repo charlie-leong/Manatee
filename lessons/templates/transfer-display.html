@@ -13,24 +13,22 @@ All transfers{%endblock%}
       <div class="mb-4">
         <h1>Your Transactions</h1>
       </div>
-      <div style='text-align: center;'>
-        <div class="row">
-          <div class="col" style="background-color:lavenderblush; ">Invoice number</div>
-          <div class="col" style="background-color:lavenderblush;">Amount</div>
-        </div>
-        {% for transfer in allTransfers %}
-        <div class="row">
-          <div class="col">#{{transfer.invoice_number}}</div>
-          <div class="col">£{{transfer.cost}}</div>
-        </div>
-        <!-- if last column in row -->
-        {% if forloop.counter|divisibleby:"10" and not forloop.last %}
-        <div class="row"></div>
-        {% endif %}
-
-        {% endfor %}
-
-      </div>
+  <h5> Current Balance = £{{user.print_balance}}</h5>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Invoice number</th>
+        <th scope="col">Payment</th>
+      </tr>
+    </thead>
+  {% for transfer in allTransfers %}
+    <tbody>
+      <tr>
+        <td>#{{transfer.invoice_number}}</td>
+        <td>£{{transfer.cost}}</td>
+      </tr>
+    </tbody>
+  {% endfor %}
     </div>
   </div>
 </div>
