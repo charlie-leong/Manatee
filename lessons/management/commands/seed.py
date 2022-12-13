@@ -22,11 +22,11 @@ class Command(BaseCommand):
         """ Runs database seeding. """
         self.create_superuser()
         self.create_admin()
-        self.create_regular_user()
         self.generate_students()
         self.generate_requests()
         self.generate_lessons()
         self.generate_bank_transfers()
+        self.create_regular_user()
 
     def generate_students(self):
         """ Generates around 100 students. """
@@ -146,10 +146,11 @@ class Command(BaseCommand):
                 first_name = "John",
                 last_name = "Doe",
                 email = "john.doe@example.org",
-                password = "Password123"
+                password = "Password123",
+                balance = 100
             )
 
-            request = Request.objects.create(
+            request1 = Request.objects.create(
                 user = user,
                 availability = "THURSDAY",
                 number_of_lessons = 3,
@@ -157,11 +158,34 @@ class Command(BaseCommand):
                 duration = 45
             )
 
+            request2 = Request.objects.create(
+                user = user,
+                availability = "FRIDAY",
+                number_of_lessons = 1,
+                interval = 2,
+                duration = 60
+            )
+
+            Request.objects.create(
+                user = user,
+                availability = "WEDNESDAY",
+                number_of_lessons = 2,
+                interval = 2,
+                duration = 30
+            )
+
             lesson = Lesson.objects.create(
-                request = request,
+                request = request1,
                 teacher = "Mr Keppens",
                 startDate = date(2022, 9, 3),
                 startTime = time(11, 30, 0)
+            )
+
+            Lesson.objects.create(
+                request = request2,
+                teacher = "Mrs Lancelot",
+                startDate = date(2022, 10, 7),
+                startTime = time(14, 0, 0)
             )
 
             lesson.pay_lesson(random.randint(0, 999))
