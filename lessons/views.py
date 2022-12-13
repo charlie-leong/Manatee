@@ -84,6 +84,8 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
+                if user.is_staff:
+                    return redirect("/admin")
                 redirect_url = next or "dashboard"
                 return redirect(redirect_url)
         # If invalid login details
