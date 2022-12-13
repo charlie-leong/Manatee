@@ -10,7 +10,7 @@ from faker import Faker
 from datetime import date, timedelta, time
 import random
 
-from lessons.models import User, Request, Lesson, AVAILABILITY, DURATIONS, NUM_LESSONS, LESSON_INTERVAL
+from lessons.models import BankTransfer, User, Request, Lesson, AVAILABILITY, DURATIONS, NUM_LESSONS, LESSON_INTERVAL
 
 class Command(BaseCommand):
 
@@ -26,6 +26,7 @@ class Command(BaseCommand):
         self.generate_students()
         self.generate_requests()
         self.generate_lessons()
+        self.generate_bank_transfers()
 
     def generate_students(self):
         """ Generates around 100 students. """
@@ -83,6 +84,19 @@ class Command(BaseCommand):
             except IntegrityError:
                 continue
         print("Lessons complete")
+    
+    def generate_bank_transfers(self):
+        """Generates around 40 bank transfers (paid lessons)."""
+        for i in range(40):
+            pks = Lesson.objects.filter(paid = False).values_list("pk", flat = True)
+            random_pk = random.choice(pks)
+            lesson = Lesson.objects.get(pk = random_pk)
+            print(f'Seeding bank transfer {i}',  end='\r')
+            try:
+                lesson.pay_lesson(random.randint(0, 999))
+            except:
+                continue
+        print("Bank transfers complete")
 
     def generate_random_date(self):
         """ Generates random date. """
@@ -142,11 +156,13 @@ class Command(BaseCommand):
                 duration = 45
             )
 
-            Lesson.objects.create(
+            lesson = Lesson.objects.create(
                 request = request,
                 teacher = "Mr Keppens",
                 startDate = date(2022, 9, 3),
                 startTime = time(11, 30, 0)
             )
+
+            lesson.pay_lesson(random.randint(0, 999))
         except IntegrityError:
             pass

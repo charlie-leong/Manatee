@@ -20,7 +20,7 @@ All transfers{%endblock%}
         </div>
         {% for transfer in allTransfers %}
         <div class="row">
-          <div class="col">#{{transfer.full_invoice_number}}</div>
+          <div class="col">#{{transfer.invoice_number}}</div>
           <div class="col">£{{transfer.cost}}</div>
         </div>
         <!-- if last column in row -->

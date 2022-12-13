@@ -4,6 +4,7 @@ All views for the lessons application.
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.utils import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect, render 
 from django.urls import reverse
@@ -54,15 +55,19 @@ def editRequest(httpReq, req_id):
     except Request.DoesNotExist:
         return HttpResponseNotFound()
 
-
+@login_required
 def bank_transfer(httpReq, lesson_id):
     lessonToBePaid = Lesson.objects.get(request_id = lesson_id)
     if httpReq.method == 'POST':
         form = BankTransferForm(httpReq.POST)
-        if form.is_valid() and httpReq.user.balance >= lessonToBePaid.calculateCost():
-            form.save(httpReq.user, lessonToBePaid)
-            return HttpResponseRedirect(reverse('transfer-display'))
-        messages.add_message(httpReq, messages.ERROR,'Insufficient funds to carry out payment')
+        if form.is_valid():
+            try:
+                lessonToBePaid.pay_lesson(form.cleaned_data.get("invoice_number"))
+                return HttpResponseRedirect(reverse('transfer-display'))
+            except ValueError as errorMessage:
+                messages.add_message(httpReq, messages.ERROR, errorMessage)
+            except IntegrityError:
+                messages.add_message(httpReq, messages.ERROR, "Invoice number must be unique.")
 
     form = BankTransferForm(httpReq.POST or None)
     return render(httpReq, 'bank-transfer.html',{'lessonId':lesson_id, 'lessonTBP':lessonToBePaid,'form':form})
