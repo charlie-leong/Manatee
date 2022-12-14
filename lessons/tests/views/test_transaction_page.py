@@ -4,7 +4,8 @@ Test cases for the transaction view.
 
 from django.test import TestCase
 from django.urls import reverse
-from lessons.models import User
+from lessons.models import User, BankTransfer
+from ..helpers import LogInTester
 
 
 class DashboardViewTestCase(TestCase, LogInTester):
@@ -22,11 +23,15 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.assertEqual(self.url, "/transfer-display/")
 
     # testing the transaction view page.
-    def transaction_view(self):
+    def test_transaction_view(self):
         self.client.login(username = self.user.username, password = "Password123")
         self.assertTrue(self._is_logged_in())
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "transfer-display.html")
+
+
+        
+
 
     
