@@ -151,3 +151,5 @@ class BankTransfer(models.Model):
     def save(self, *args, **kwargs):
         self.lesson.set_paid_to_true() 
         super().save(*args, **kwargs)
+
+
