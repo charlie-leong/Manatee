@@ -4,11 +4,11 @@ Test cases for the transaction view.
 
 from django.test import TestCase
 from django.urls import reverse
-from lessons.models import User, BankTransfer
+from lessons.models import User
 from ..helpers import LogInTester
 
 
-class DashboardViewTestCase(TestCase, LogInTester):
+class TransactionViewTestCase(TestCase, LogInTester):
 
     fixtures = [
         "lessons/tests/fixtures/default_user.json"

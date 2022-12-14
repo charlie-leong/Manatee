@@ -4,7 +4,6 @@ from lessons.models import User, Request
 from django.urls import reverse
 from django.contrib import messages
 from lessons.tests.helpers import LogInTester
-from django.contrib.auth.models import AnonymousUser
 
 
 class RequestViewTestCase(TestCase, LogInTester):

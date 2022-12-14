@@ -3,7 +3,7 @@ Test cases for bank transfer view.
 """
 from django.test import TestCase
 
-from lessons.models import Lesson, Request, User, BankTransfer
+from lessons.models import Lesson, Request, User
 
 class BankTransferViewTestCase(TestCase):
     

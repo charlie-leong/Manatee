@@ -5,15 +5,11 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
-from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+from django.core.validators import RegexValidator
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser
 import uuid
-from decimal import Decimal
-#from django.utils.translation import ugettext_lazy as _
 
-
-# Create your models here.
 AVAILABILITY = [
     ('MONDAY','Monday'),
     ('TUESDAY', 'Tuesday'),
@@ -41,7 +37,6 @@ class User(AbstractUser):
             regex= r'^@\w{3,}$',
             message = "Username must consist of  an '@' and a minimum of 3 alphanumericals!"
         )])
-    # username = None
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)  # check if need to edit

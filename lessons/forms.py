@@ -3,7 +3,7 @@ All of the forms of the lesson application.
 """
 from django import forms
 from django.core.validators import RegexValidator
-from lessons.models import BankTransfer, Lesson, Request, User
+from lessons.models import BankTransfer, Request, User
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 

@@ -11,7 +11,7 @@ from django.urls import reverse
 from .forms import BankTransferForm, LogInForm, RequestForm, SignUpForm
 from .helpers import login_prohibited
 from .models import BankTransfer, Request, Lesson
-from .utils import updateReqEntry
+from .helpers import updateReqEntry
 from django.core.exceptions import PermissionDenied
 
 def home(request):
